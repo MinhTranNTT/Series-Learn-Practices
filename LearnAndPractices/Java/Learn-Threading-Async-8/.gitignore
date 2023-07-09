@@ -33,4 +33,5 @@ build/
 .vscode/
 
 ## Package ###
-/testprobles/
+**/testprobles/
+/LearnAndPractices/Java/Learn-Threading-Async-8/src/main/java/com/example/testprobles
