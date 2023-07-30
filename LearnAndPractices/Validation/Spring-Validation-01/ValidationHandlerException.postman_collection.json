@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "219be7e2-4729-4b38-ae0e-7fbaf1ef0841",
+		"name": "ValidationHandlerException",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21310089"
+	},
+	"item": [
+		{
+			"name": "ExceptionResource",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/resourceNotFoundException",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"resourceNotFoundException"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ExceptionIllegal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/illegalArgumentException",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"illegalArgumentException"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ExceptionResourceCustom",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/api/responseStatusExceptionCustomController2",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"responseStatusExceptionCustomController2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Day02-Save",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"classId\": \"12345678\",\r\n    \"name\": null,\r\n    \"sex\": \"Man22\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/persons",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"persons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Day02-Save-Custom-Annotation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"classId\": \"12345678\",\r\n    \"name\": null,\r\n    \"sex\": \"Man22\",\r\n    \"region\": \"VNI\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/persons",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"persons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Day02-Save-CustomPhone",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"classId\": \"12345678\",\r\n    \"name\": null,\r\n    \"sex\": \"Man22\",\r\n    \"region\": \"VNI\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/persons",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"persons"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Day02-GetByID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"classId\": \"12345678\",\r\n    \"name\": null,\r\n    \"sex\": \"Man22\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/persons/6",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"persons",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Day02-GetByName",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"classId\": \"12345678\",\r\n    \"name\": null,\r\n    \"sex\": \"Man22\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/persons?name=minhminhminh",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"persons"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "minhminhminh"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
