@@ -8,8 +8,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @MapperScan("com.example.mapper")
 public class MybatisPlusConfig {
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        // plug-in paging
+        return new PaginationInterceptor();
+    }
+
 //    @Bean
-//    public PaginationInterceptor paginationInterceptor() {
-//        return new PaginationInterceptor();
+//    public PaginationInnerInterceptor paginationInterceptor() {
+//        // plug-in paging
+//        return new PaginationInnerInterceptor();
 //    }
 }
