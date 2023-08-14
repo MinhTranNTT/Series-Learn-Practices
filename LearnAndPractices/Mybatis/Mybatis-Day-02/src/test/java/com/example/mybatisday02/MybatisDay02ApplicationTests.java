@@ -123,7 +123,7 @@ class MybatisDay02ApplicationTests {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("age", 21);
 
-        Page<User> page = new Page<>(1,2);
+        Page<User> page = new Page<>(1,10);
         IPage<User> iPage = this.userMapper.selectPage(page, queryWrapper);
         System.out.println("Total: " + iPage.getTotal());
         System.out.println("Page: " + iPage.getPages());
@@ -144,11 +144,78 @@ class MybatisDay02ApplicationTests {
         }
     }
 
+    @Test
+    public void testAllEq() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("age", 21);
+        map.put("id", 7);
+        map.put("name", null);
 
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.allEq(map);  SELECT id,user_name,name,age,email FROM tb_user WHERE name IS NULL AND id = ? AND age = ?
+//        queryWrapper.allEq(map, false);   SELECT id,user_name,name,age,email FROM tb_user WHERE id = ? AND age = ?
+//        queryWrapper.allEq(map, true);  // skip key have value null
+        List<User> users = userMapper.selectList(queryWrapper);
 
+        users.forEach(System.out::println);
+    }
 
+    // IN
+    @Test
+    public void testOperator() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_name", "Vayne 10")
+                .eq("password", 1234)
+                .eq("age", 21)
+                .in("id", 10,14);
 
+        List<User> users = this.userMapper.selectList(wrapper);
+        users.forEach(System.out::println);
+    }
 
+    // LIKE
+    @Test
+    public void testOperatorLike() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.like("user_name", "Vayne 10")
+                .eq("password", 1234)
+                .eq("age", 21)
+                .in("id", 10,9);
+
+        List<User> users = this.userMapper.selectList(wrapper);
+        users.forEach(System.out::println);
+    }
+
+    // OrderBy
+    @Test
+    public void testOperatorLikeOrderBy() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.like("user_name", "Vayne 10")
+                .eq("password", 1234)
+                .eq("age", 21)
+                .in("id", 10,9)
+                .orderBy(true, true, "user_name");
+    //.orderByDesc("user_name");
+
+        List<User> users = this.userMapper.selectList(wrapper);
+        users.forEach(System.out::println);
+    }
+
+    @Test
+    public void testOrAnd() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+//        wrapper.eq("user_name", "minhtran2").eq("age", 22)
+//                .or()
+//                .eq("user_name", "Vayne 1").eq("age", 21);
+
+        // SELECT id,user_name,name,age,email FROM tb_user WHERE ( user_name = ? AND age = ? ) OR ( user_name = ? AND age = ? )
+        wrapper.and(i -> i.eq("user_name", "minhtran2").eq("age", 22))
+                .or(i -> i.eq("user_name", "Vayne 1").eq("age", 21))
+                .select("id","user_name");
+
+        List<User> users = this.userMapper.selectList(wrapper);
+        users.forEach(System.out::println);
+    }
 
 
 }

@@ -14,9 +14,4 @@ public class MybatisPlusConfig {
         return new PaginationInterceptor();
     }
 
-//    @Bean
-//    public PaginationInnerInterceptor paginationInterceptor() {
-//        // plug-in paging
-//        return new PaginationInnerInterceptor();
-//    }
 }
