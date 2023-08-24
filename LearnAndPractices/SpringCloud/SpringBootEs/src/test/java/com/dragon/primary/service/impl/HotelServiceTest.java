@@ -8,6 +8,8 @@ import com.dragon.primary.service.IHotelService;
 import com.dragon.springbootes.SpringBootEsApplication;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.dragon.primary.constants.HotelConstants.MAPPING_TEMPLATE;
 import static com.dragon.primary.constants.HotelConstants.indexName;
@@ -110,9 +113,31 @@ class HotelServiceTest {
     }
 
     @Test
+    void testDeleteDocument() throws IOException {
+        DeleteRequest request = new DeleteRequest(indexName,"36934");
+        this.client.delete(request, RequestOptions.DEFAULT);
+    }
+
+    @Test
     void getHotelDocById() {
         Hotel hotel = hotelService.getById(36934L);
         HotelDoc hotelDoc = HotelDoc.fromHotelDoc(hotel);
         System.out.println(hotelDoc);
+    }
+
+    @Test
+    void testBulkDocument() throws IOException {
+        List<Hotel> list = hotelService.list();
+        BulkRequest request = new BulkRequest(indexName);
+
+        list.forEach(hotel -> {
+            HotelDoc hotelDoc = HotelDoc.fromHotelDoc(hotel);
+            request.add(new IndexRequest(indexName)
+                    .id(hotelDoc.getId().toString())
+                    .source(JSON.toJSONString(hotelDoc), XContentType.JSON)
+            );
+        });
+
+        this.client.bulk(request, RequestOptions.DEFAULT);
     }
 }

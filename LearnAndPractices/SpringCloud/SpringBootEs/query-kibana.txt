@@ -1,0 +1,499 @@
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET /_analyze
+{
+  "analyzer": "standard",
+  "text": "MinhTran"
+}
+
+GET /_analyze
+{
+  "analyzer": "standard",
+  "text": "hello world"
+}
+
+GET /_analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "黑马程序员学习java太棒了"
+}
+
+GET /_analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "传智播客Java就业超过90%,奥力给！"
+}
+
+GET /_analyze
+{
+  "analyzer": "ik_max_word",
+  "text": "传智播客Java就业率超过95%,习大大都点赞,奥力给！"
+}
+
+
+PUT /heima
+{
+  "mappings": {
+    "properties": {
+      "info": {
+        "type": "text",
+        "analyzer": "ik_smart"
+      },
+      "email": {
+        "type": "keyword",
+        "index": false
+      },
+      "name": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "keyword"
+          },
+          "lastName": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
+
+# show index
+GET /heima
+# delete index
+DELETE /heima
+
+# add mapping
+PUT /heima/_mapping
+{
+  "properties": {
+    "age": {
+      "type": "integer"
+    }
+  }
+}
+
+# add document on index
+PUT /heima/_doc/1
+{
+  "email": "tvhminhhacker@gmail.com",
+  "info": "Minh Dep Trai",
+  "name": {
+    "firstName": "Minh",
+    "lastName": "Tran"
+  }
+}
+
+GET /heima/_doc/1
+DELETE /heima/_doc/1
+
+# if using _update, document not exist will be not create
+# else put same _doc/{id} , it update
+POST /heima/_update/1
+{
+  "doc": {
+    "info": "Minh Rat Dep Trai"
+  }
+}
+
+#
+PUT /hotel
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword"
+      },
+      "name": {
+        "type": "text",
+        "analyzer": "ik_max_word",
+        "copy_to": "all"
+      },
+      "address": {
+        "type": "keyword",
+        "index": false
+      },
+      "price": {
+        "type": "integer"
+      },
+      "score": {
+        "type": "integer"
+      },
+      "brand": {
+        "type": "keyword",
+        "copy_to": "all"
+      },
+      "city": {
+        "type": "keyword",
+        "copy_to": "all"
+      },
+      "starName": {
+        "type": "keyword"
+      },
+      "business": {
+        "type": "keyword"
+      },
+      "location": {
+        "type": "geo_point"
+      },
+      "pic": {
+        "type": "keyword",
+        "index": false
+      },
+      "all": {
+        "type": "text",
+        "analyzer": "ik_max_word"
+      }
+    }
+  }
+}
+
+GET /hotel
+
+GET /hotel/_doc/36934
+
+GET /hotel/_search
+
+GET /hotel/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+# match
+GET /hotel/_search
+{
+  "query": {
+    "match": {
+      "all": "安交路"
+    }
+  }
+}
+
+# multi match
+GET /hotel/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "安交路安贞地区",
+      "fields": ["business","name","city"]
+    }
+  }
+}
+
+# tern truy van chinh xac
+GET /hotel/_search
+{
+  "query": {
+    "term": {
+      "city": {
+        "value": "上海"
+      }
+    }
+  }
+}
+
+# tern truy van chinh xac and get max size
+GET /hotel/_search
+{
+  "query": {
+    "term": {
+      "city": {
+        "value": "上海"
+      }
+    }
+  },
+  "size": 1000
+}
+
+# range truy van trong khoang
+# gte >= ; gt >
+GET /hotel/_search
+{
+  "query": {
+    "range": {
+      "price": {
+        "gte": 100,
+        "lte": 300
+      }
+    }
+  }
+}
+
+# geo_bounding_box hinh chu nhat
+GET /hotel/_search
+{
+  "query": {
+    "geo_bounding_box": {
+      "location": {
+        "top_left": {
+          "lat": 31.1,
+          "lon": 121.5
+        },
+        "bottom_right": {
+          "lat": 30.9,
+          "lon": 121.7
+        }
+      }
+    }
+  }
+}
+
+# ban kinh hinh tron
+GET /hotel/_search
+{
+  "query": {
+    "geo_distance": {
+      "distance": "12km",
+      "location": "30.9, 121.7"
+    }
+  }
+}
+
+GET /hotel/_search
+{
+  "query": {
+    "function_score": {
+      "query": { "match": {"all": "外滩"} },
+      "functions": [
+        {
+          "filter": {"term": {"id": "1"}},
+          "weight": 10
+        }
+      ],
+      "boost_mode": "multiply"
+    }
+  }
+}
+
+GET /hotel/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "match": {
+          "all": "外滩"
+        }
+      },
+      "functions": [
+        {
+          "filter": {
+            "term": {
+              "brand": "君悦"
+            }
+          },
+          "weight": 10
+        }
+      ],
+      "boost_mode": "sum"
+    }
+  }
+}
+
+GET /hotel/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"term": {"city": "上海" }}
+      ],
+      "should": [
+        {"term": {"brand": "皇冠假日" }},
+        {"term": {"brand": "华美达" }}
+      ],
+      "must_not": [
+        { "range": { "price": { "lte": 500 } }}
+      ],
+      "filter": [
+        { "range": {"score": { "gte": 45 } }}
+      ]
+    }
+  }
+}
+
+
+GET /hotel/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "name": "如家"
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "range": {
+            "price": {
+              "gt": 400
+            }
+          }
+        }
+      ],
+      "filter": [
+        {
+          "geo_distance": {
+            "distance": "10km",
+            "location": {
+              "lat": 31.21,
+              "lon": 121.5
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# sort 
+GET /hotel/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "match": {
+          "all": "外滩"
+        }
+      },
+      "functions": [
+        {
+          "filter": {
+            "term": {
+              "brand": "君悦"
+            }
+          },
+          "weight": 10
+        }
+      ],
+      "boost_mode": "sum"
+    }
+  },
+  "sort": [
+    {
+      "price": {
+        "order": "asc"
+      }
+    }
+  ]
+}
+
+# sort nhieu gia tri, khi gia tri dau tien bang nhau
+# se so sanh den gia tri thu 2
+GET /hotel/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "score":  "desc"
+    },{
+      "price":  "asc"
+    }
+  ]
+}
+
+
+# Giả sử vị trí của tôi là: 31.034661, 121.612282, tìm kiếm khách sạn gần
+# nhất xung quanh tôi.
+GET /hotel/_search
+{
+  "query": {"match_all": {}},
+  "sort": [
+    {
+      "_geo_distance": {
+        "location": {
+          "lat": 31,
+          "lon": 121
+        },
+        "order": "asc",
+        "unit": "km"
+      }
+    }
+  ]
+}
+
+# 分页查询 
+GET /hotel/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "from": 0,
+  "size": 10,
+  "sort": [
+    {
+      "price": "asc"
+    }
+  ]
+}
+
+
+GET /hotel/_search
+{
+  "query": {
+    "match": {
+      "FIELD": "TEXT"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "FIELD": {
+        "pre_tags": "<em>",
+        "post_tags": "</em>"
+      }
+    }
+  }
+}
+
+# 高亮查询，默认情况下，ES搜索字段必须与高亮字段一致
+GET /hotel/_search
+{
+ "query": {
+  "match": {
+   "all": "如家"
+  }
+ },
+ "highlight": {
+  "fields": { 
+   "name": {
+     "require_field_match": "false", 
+    "pre_tags": "<em>", 
+    "post_tags": "</em>" 
+   }
+  }
+ }
+}
+
+
+
+GET /hotel/_search
+{
+  "query": {
+    "match_all": {
+      "boost": 1
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

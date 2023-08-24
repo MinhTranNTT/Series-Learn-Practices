@@ -28,6 +28,14 @@
         <appender-ref ref="CONSOLE"/>
     </logger>
 
+    <!--ES-->
+    <!--<include resource="org/springframework/boot/logging/logback/defaults.xml" />-->
+    <!-- Configure the Elasticsearch client logs -->
+    <logger name="org.elasticsearch.client.RestClient" level="DEBUG" />
+    <!-- Configure the Apache HttpClient wire logs -->
+    <logger name="org.apache.http.wire" level="DEBUG" />
+    <!--END ES-->
+
     <root level="info">
         <appender-ref ref="CONSOLE"/>
     </root>
