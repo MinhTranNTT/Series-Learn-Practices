@@ -131,7 +131,8 @@ class HotelServiceTest {
         BulkRequest request = new BulkRequest(indexName);
 
         list.forEach(hotel -> {
-            HotelDoc hotelDoc = HotelDoc.fromHotelDoc(hotel);
+//            HotelDoc hotelDoc = HotelDoc.fromHotelDoc(hotel);
+            HotelDoc hotelDoc = new HotelDoc(hotel);
             request.add(new IndexRequest(indexName)
                     .id(hotelDoc.getId().toString())
                     .source(JSON.toJSONString(hotelDoc), XContentType.JSON)

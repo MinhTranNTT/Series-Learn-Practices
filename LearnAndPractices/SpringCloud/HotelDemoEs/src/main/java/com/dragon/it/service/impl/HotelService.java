@@ -19,12 +19,17 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.dragon.it.constants.HotelConstants.*;
@@ -99,5 +104,51 @@ public class HotelService extends ServiceImpl<HotelMapper, Hotel> implements IHo
 //        request.source().query(boolQuery);
         request.source().query(functionScoreQuery);
     }
+
+
+    @Override
+    public Map<String, List<String>> getFilters(RequestParams params) {
+        SearchRequest request = new SearchRequest(INDEX_NAME);
+        buildBasicStyleQuery(params, request);
+        // aggregation data, not get then set size = 0
+        request.source().size(0);
+        buildBasicAggregations(request);
+        try {
+            SearchResponse response = this.client.search(request, RequestOptions.DEFAULT);
+            Map<String, List<String>> result = new HashMap<>();
+            Aggregations aggregations = response.getAggregations();
+            List<String> brandLst = ElasticSearchUtils.getAggregationByFieldName(aggregations, PARAM_ES_AGG_BRAND);
+            result.put(PARAM_ES_BRAND, brandLst);
+
+            List<String> cityList = ElasticSearchUtils.getAggregationByFieldName(aggregations, PARAM_ES_AGG_CITY);
+            result.put(PARAM_ES_CITY, cityList);
+
+            List<String> startLst = ElasticSearchUtils.getAggregationByFieldName(aggregations, PARAM_ES_AGG_STAR);
+            result.put(PARAM_ES_STAR_NAME, startLst);
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void buildBasicAggregations(SearchRequest request) {
+        request.source().aggregation(AggregationBuilders
+                .terms(PARAM_ES_AGG_BRAND)
+                .field(PARAM_ES_BRAND)
+                .size(ES_AGG_LIMIT));
+
+        request.source().aggregation(AggregationBuilders
+                .terms(PARAM_ES_AGG_CITY)
+                .field(PARAM_ES_CITY)
+                .size(ES_AGG_LIMIT));
+
+        request.source().aggregation(AggregationBuilders
+                .terms(PARAM_ES_AGG_STAR)
+                .field(PARAM_ES_STAR_NAME)
+                .size(ES_AGG_LIMIT));
+
+
+    }
+
 
 }

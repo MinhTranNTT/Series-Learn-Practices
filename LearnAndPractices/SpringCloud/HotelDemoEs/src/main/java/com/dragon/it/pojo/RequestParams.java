@@ -16,7 +16,4 @@ public class RequestParams {
     private Integer maxPrice;
     // location filter
     private String location;
-    // is ADS
-    private boolean isADS;
-
 }

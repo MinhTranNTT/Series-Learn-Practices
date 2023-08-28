@@ -51,4 +51,6 @@ public class HotelConstants {
             "    }\n" +
             "  }\n" +
             "}";
+
+    public static final String mySuggestion = "mySuggestion";
 }
