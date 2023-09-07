@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @MapperScan("com.example.mapper")
-@ComponentScan("com.example.config")    // setup scan config package or @Import(MybatisPlusConfig.class)
+@ComponentScan("com.example")    // setup scan config package or @Import(MybatisPlusConfig.class)
 public class MybatisDay02Application {
 
     public static void main(String[] args) {
