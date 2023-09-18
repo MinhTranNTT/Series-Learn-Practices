@@ -2,7 +2,6 @@ package com.parallelstepbystepcn.clientcn02;
 
 public class ComparePriceDemo {
     public static void main(String[] args) {
-        // 方案一测试：串行方式操作商品比价
         ComparePriceService service = new ComparePriceService();
 
         long start = System.currentTimeMillis();

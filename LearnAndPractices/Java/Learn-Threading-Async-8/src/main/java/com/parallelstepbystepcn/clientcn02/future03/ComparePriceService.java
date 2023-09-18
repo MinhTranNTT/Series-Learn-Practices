@@ -1,5 +1,6 @@
 package com.parallelstepbystepcn.clientcn02.future03;
 
+import com.parallelstepbystepcn.clientcn02.Common02;
 import com.parallelstepbystepcn.clientcn02.HttpRequest;
 import com.parallelstepbystepcn.clientcn02.PriceResult;
 
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ComparePriceService {
     public PriceResult batchComparePrice(List<String> products) {
-        // 遍历每个商品，根据商品开启异步任务获取最终价，然后归集到List集合
+        // Traverse each product, start an asynchronous task based on the product to obtain the final price, and then collect it into the List collection
         List<CompletableFuture<PriceResult>> completableFutures = products.stream()
                 .map(product -> {
                     return CompletableFuture
@@ -18,7 +19,7 @@ public class ComparePriceService {
                             .thenCombine(CompletableFuture.supplyAsync(() -> HttpRequest.getTaoBaoDiscount(product)), this::computeRealPrice);
                 }).collect(Collectors.toList());
 
-        // 把多个商品的最终价进行排序比较获取最小值
+        // Sort and compare the final prices of multiple products to obtain the minimum value
         return completableFutures
                 .stream()
                 .map(CompletableFuture::join)
@@ -30,7 +31,7 @@ public class ComparePriceService {
     public PriceResult computeRealPrice(PriceResult priceResult, int discount) {
         priceResult.setRealPrice(priceResult.getPrice() - discount);
         priceResult.setDiscount(discount);
-        //LogUtils.printLog(priceResult.getPlatform() + "最终价格计算完成:" + priceResult.getRealPrice());
+        Common02.printThreadLog(priceResult.getPlatform() + " Final price calculation completed: " + priceResult.getRealPrice());
         return priceResult;
     }
 }

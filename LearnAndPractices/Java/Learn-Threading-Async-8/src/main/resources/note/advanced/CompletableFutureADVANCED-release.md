@@ -381,7 +381,7 @@ IO密集型任务的特点：大量网络请求，文件操作，CPU运算少，
 
 ### 4.1 需求描述和分析
 
-**需求描述**： 实现一个大数据比价服务，价格数据可以从京东、天猫、拼多多等平台去获取指定商品的价格、优惠金额，然后计算出实际付款金额 ( 商品价格 - 优惠金额 )，最终返回价格最优的平台与价格信息。
+**需求描述**： 实现一个大数据比价服务，价格数据可以从京东、天猫、Pinduoduo等平台去获取指定商品的价格、优惠金额，然后计算出实际付款金额 ( 商品价格 - 优惠金额 )，最终返回价格最优的平台与价格信息。
 
 <img src="img\01-需求.png" style="zoom: 65%;" />
 
@@ -485,21 +485,21 @@ public class HttpRequest {
     }
 
 
-    // 获取指定商品的拼多多价
+    // 获取指定商品的Pinduoduo价
     public static PriceResult getPDDPrice(String productName) {
-        CommonUtils.printThreadLog("获取拼多多上" + productName + "价格");
+        CommonUtils.printThreadLog("Get on Pinduoduo" + productName + "价格");
         mockCostTimeOperation();
 
-        PriceResult priceResult = new PriceResult("拼多多");
+        PriceResult priceResult = new PriceResult("Pinduoduo");
         priceResult.setPrice(5399);
-        CommonUtils.printThreadLog("获取拼多多上" + productName + "价格完成：5399");
+        CommonUtils.printThreadLog("Get on Pinduoduo" + productName + "价格完成：5399");
         return priceResult;
     }
-    // 获取指定商品的拼多多优惠
+    // 获取指定商品的Pinduoduo优惠
     public static int getPDDDiscount(String productName) {
-        CommonUtils.printThreadLog("获取拼多多上" + productName + "优惠");
+        CommonUtils.printThreadLog("Get on Pinduoduo" + productName + "优惠");
         mockCostTimeOperation();
-        CommonUtils.printThreadLog("获取拼多多上" + productName + "优惠完成：-5300");
+        CommonUtils.printThreadLog("Get on Pinduoduo" + productName + "优惠完成：-5300");
         return 5300;
     }
 
@@ -534,7 +534,7 @@ public class ComparePriceService {
         discount = HttpRequest.getJDongDiscount(productName);
         PriceResult jDongPriceResult = this.computeRealPrice(priceResult, discount);
 
-        // 获取拼多多平台的价格和优惠
+        // 获取Pinduoduo平台的价格和优惠
         priceResult = HttpRequest.getPDDPrice(productName);
         discount = HttpRequest.getPDDDiscount(productName);
         PriceResult pddPriceResult = this.computeRealPrice(priceResult, discount);
@@ -601,7 +601,7 @@ public class ComparePriceService {
             return this.computeRealPrice(priceResult, discount);
         });
 
-        // 获取拼多多平台的价格和优惠
+        // 获取Pinduoduo平台的价格和优惠
         Future<PriceResult> pddFuture = executor.submit(() -> {
             PriceResult priceResult = HttpRequest.getPDDPrice(productName);
             int discount = HttpRequest.getPDDDiscount(productName);
@@ -660,7 +660,7 @@ public class ComparePriceService {
         CompletableFuture<PriceResult> jDongCF = CompletableFuture
                 .supplyAsync(() -> HttpRequest.getJDongPrice(productName))
                 .thenCombine(CompletableFuture.supplyAsync(() -> HttpRequest.getJDongDiscount(productName)), this::computeRealPrice);
-        // 获取拼多多平台的价格和优惠
+        // 获取Pinduoduo平台的价格和优惠
         CompletableFuture<PriceResult> pddCF = CompletableFuture
                 .supplyAsync(() -> HttpRequest.getPDDPrice(productName))
                 .thenCombine(CompletableFuture.supplyAsync(() -> HttpRequest.getPDDDiscount(productName)), this::computeRealPrice);

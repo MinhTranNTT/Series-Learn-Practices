@@ -1,5 +1,6 @@
 package com.parallelstepbystepcn.clientcn02.future;
 
+import com.parallelstepbystepcn.clientcn02.Common02;
 import com.parallelstepbystepcn.clientcn02.HttpRequest;
 import com.parallelstepbystepcn.clientcn02.PriceResult;
 
@@ -11,33 +12,33 @@ import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 public class ComparePriceService {
-    // 方案二：使用Future+线程池增强并行
+    // Solution 2: Use Future+thread pool to enhance parallelism
     public PriceResult getCheapestPlatformPrice2(String productName) {
-        // 线程池
+        // Thread Pool
         ExecutorService executor = Executors.newFixedThreadPool(5);
 
-        // 获取淘宝平台的价格和优惠
+        // Get prices and offers from Taobao platform
         Future<PriceResult> taoBaoFuture = executor.submit(() -> {
             PriceResult priceResult = HttpRequest.getTaoBaoPrice(productName);
             int discount = HttpRequest.getTaoBaoDiscount(productName);
             return this.computeRealPrice(priceResult, discount);
         });
 
-        // 获取京东平台的价格和优惠
+        // Get prices and offers on JD platform
         Future<PriceResult> jDongFuture = executor.submit(() -> {
             PriceResult priceResult = HttpRequest.getJDongPrice(productName);
             int discount = HttpRequest.getJDongDiscount(productName);
             return this.computeRealPrice(priceResult, discount);
         });
 
-        // 获取拼多多平台的价格和优惠
+        // Get prices and offers on the Pinduoduo platform
         Future<PriceResult> pddFuture = executor.submit(() -> {
             PriceResult priceResult = HttpRequest.getPDDPrice(productName);
             int discount = HttpRequest.getPDDDiscount(productName);
             return this.computeRealPrice(priceResult, discount);
         });
 
-        // 比较计算最便宜的平台和价格
+        // Compare and calculate the cheapest platforms and prices
         return Stream.of(taoBaoFuture, jDongFuture, pddFuture)
                 .map(future -> {
                     try {
@@ -52,11 +53,11 @@ public class ComparePriceService {
                 .get();
     }
 
-    // 计算商品的最终价格 = 平台价格 - 优惠价
+    // Calculate the final price of the product = platform price - discount price
     public PriceResult computeRealPrice(PriceResult priceResult,int discount) {
         priceResult.setRealPrice(priceResult.getPrice() - discount);
         priceResult.setDiscount(discount);
-        //LogUtils.printLog(priceResult.getPlatform() + "最终价格计算完成:" + priceResult.getRealPrice());
+        Common02.printThreadLog(priceResult.getPlatform() + " Final price calculation completed: " + priceResult.getRealPrice());
         return priceResult;
     }
 }

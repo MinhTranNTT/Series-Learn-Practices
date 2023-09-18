@@ -3,9 +3,9 @@ package com.parallelstepbystepcn.clientcn02.future;
 import com.parallelstepbystepcn.clientcn02.PriceResult;
 
 public class ComparePriceDemo02 {
-    public static void main(String[] args) {
+    public static void main(String[] args) {    // 2.24 s
         ComparePriceService service = new ComparePriceService();
-        // 方案二测试：使用Future+线程池增强并行
+        // Option 2 test: Use Future+thread pool to enhance parallelism
         long start = System.currentTimeMillis();
         PriceResult priceResult = service.getCheapestPlatformPrice2("iPhone");
         long end = System.currentTimeMillis();

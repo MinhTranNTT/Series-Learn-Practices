@@ -1,62 +1,62 @@
 package com.parallelstepbystepcn.clientcn02;
 
 public class HttpRequest {
-    // 获取指定商品的淘宝价
+    // get price
     public static PriceResult getTaoBaoPrice(String productName) {
-        Common02.printThreadLog("获取淘宝上" + productName + "价格");
+        Common02.printThreadLog("Get on Taobao " + productName + " price ");
         mockCostTimeOperation();
 
-        PriceResult priceResult = new PriceResult("淘宝");
+        PriceResult priceResult = new PriceResult("Taobao");
         priceResult.setPrice(5199);
-        Common02.printThreadLog("获取淘宝上" + productName + "价格完成：5199");
+        Common02.printThreadLog("Get on Taobao " + productName + " price finish ：5199");
         return priceResult;
     }
-    // 获取指定商品的淘宝优惠
+    // get discount
     public static int getTaoBaoDiscount(String productName) {
-        Common02.printThreadLog("获取淘宝上" + productName + "优惠");
+        Common02.printThreadLog("Get on Taobao " + productName + " discount");
         mockCostTimeOperation();
-        Common02.printThreadLog("获取淘宝上" + productName + "优惠完成：-200");
+        Common02.printThreadLog("Get on Taobao " + productName + " discount finish ：-200");
         return 200;
     }
 
-    // 获取指定商品的JD价
+    // get JD product
     public static PriceResult getJDongPrice(String productName) {
-        Common02.printThreadLog("获取京东上" + productName + "价格");
+        Common02.printThreadLog("Get JD.com " + productName + " price ");
         mockCostTimeOperation();
 
-        PriceResult priceResult = new PriceResult("京东");
+        PriceResult priceResult = new PriceResult("Jingdong");
         priceResult.setPrice(5299);
-        Common02.printThreadLog("获取京东上" + productName + "价格完成：5299");
+        Common02.printThreadLog("Get JD.com " + productName + " price finish ：5299");
         return priceResult;
     }
-    // 获取指定商品的JD优惠
+    // get discount product
     public static int getJDongDiscount(String productName) {
-        Common02.printThreadLog("获取京东上" + productName + "优惠");
+        Common02.printThreadLog("Get JD.com " + productName + " discount");
         mockCostTimeOperation();
-        Common02.printThreadLog("获取京东上" + productName + "优惠完成：-150");
+        Common02.printThreadLog("Get JD.com " + productName + " discount finish ：-150");
         return 150;
     }
 
 
-    // 获取指定商品的拼多多价
+    // get price PDD
     public static PriceResult getPDDPrice(String productName) {
-        Common02.printThreadLog("获取拼多多上" + productName + "价格");
+        Common02.printThreadLog("Get on Pinduoduo " + productName + " price ");
         mockCostTimeOperation();
 
-        PriceResult priceResult = new PriceResult("拼多多");
+        PriceResult priceResult = new PriceResult("Pinduoduo");
         priceResult.setPrice(5399);
-        Common02.printThreadLog("获取拼多多上" + productName + "价格完成：5399");
+        Common02.printThreadLog("Get on Pinduoduo " + productName + " price finish ：5399");
         return priceResult;
     }
-    // 获取指定商品的拼多多优惠
+    // get discount PDD
     public static int getPDDDiscount(String productName) {
-        Common02.printThreadLog("获取拼多多上" + productName + "优惠");
+        Common02.printThreadLog("Get on Pinduoduo " + productName + " discount");
         mockCostTimeOperation();
-        Common02.printThreadLog("获取拼多多上" + productName + "优惠完成：-5300");
+        Common02.printThreadLog("Get on Pinduoduo " + productName + " discount finish ：-5300");
         return 5300;
     }
 
-    // 模拟耗时的操作
+    // many times
     private static void mockCostTimeOperation() {
         try {
             Thread.sleep(1000L);

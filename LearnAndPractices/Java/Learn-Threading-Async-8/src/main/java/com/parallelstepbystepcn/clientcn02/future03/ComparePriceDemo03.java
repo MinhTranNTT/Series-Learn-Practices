@@ -8,9 +8,14 @@ import java.util.List;
 public class ComparePriceDemo03 {
     public static void main(String[] args) {
         ComparePriceService service = new ComparePriceService();
-        // 测试在一个平台比较同款产品(iPhone14)不同色系的价格
-        List<String> products = Arrays.asList("iPhone14黑色", "iPhone14白色", "iPhone14玫瑰红");
+        // Test to compare the prices of different colors of the same product (iPhone 14) on one platform
+        long start = System.currentTimeMillis();
+        List<String> products = Arrays.asList("iPhone14Black", "iPhone14White", "iPhone14Pink");
         PriceResult priceResult = service.batchComparePrice(products);
+        long end = System.currentTimeMillis();
         System.out.println("priceResult = " + priceResult);
+
+        double costTime = (end - start) / 1000.0;
+        System.out.printf("cost %.2f second \n",costTime);
     }
 }
