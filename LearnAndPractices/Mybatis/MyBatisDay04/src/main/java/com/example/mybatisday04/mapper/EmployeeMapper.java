@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface EmployeeMapper extends BaseMapper<Employee> {
     List<Employee> selectAllByLastName(@Param("lastName") String lastName);
+    List<Employee> selectAllByLastLstId(@Param("lstId") List<Integer> list);
 }

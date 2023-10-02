@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface EmployeeService extends IService<Employee> {
     List<Employee> listAllByLastName(String lastName);
+
+    List<Employee> listAllByLstId(List<Integer> list);
 }

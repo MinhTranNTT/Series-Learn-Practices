@@ -15,4 +15,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     public List<Employee> listAllByLastName(String lastName) {
         return baseMapper.selectAllByLastName(lastName);
     }
+
+    @Override
+    public List<Employee> listAllByLstId(List<Integer> list) {
+        return baseMapper.selectAllByLastLstId(list);
+    }
 }
