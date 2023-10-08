@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ehcache
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://www.ehcache.org/ehcache.xsd">
+
+    <!--
+      path:The default path written to disk:C:\Users\lenovo\AppData\Local\Temp\
+    -->
+    <diskStore path="java.io.tmpdir"/>
+
+    <!--
+      Corresponding class：net.sf.ehcache.config.CacheConfiguration
+      maxEntriesLocalHeap:How many elements can be placed in memory at most?
+      memoryStoreEvictionPolicy:eviction strategy，net.sf.ehcache.store.MemoryStoreEvictionPolicy.fromString
+      eternal:true:Not expired
+      timeToIdleSeconds:eternal=false Valid at the time, how long it can be idle, unit s
+      timeToLiveSeconds:eternal=false Valid at the time, calculate how long it can survive from the time of creation, unit s
+      maxElementsOnDisk:localTempSwap Valid at all times, indicating the maximum number of items that can be written to the disk
+      diskExpiryThreadIntervalSeconds:localTempSwap Valid at the time, the time interval to check whether the disk element is invalid
+      persistence:When the number of elements in the cache = maxEntriesLocalHeap,
+            localTempSwap:Write to disk, other values: net.sf.ehcache.config.PersistenceConfiguration.Strategy
+      statistics:Turn on statistics
+    -->
+    <cache
+            name="user_cache"
+            maxEntriesLocalHeap="1000"
+            eternal="false"
+            timeToIdleSeconds="600"
+            timeToLiveSeconds="600"
+            maxElementsOnDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU"
+            statistics="true"
+    >
+        <persistence strategy="localTempSwap"/>
+    </cache>
+</ehcache>

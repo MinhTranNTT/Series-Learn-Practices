@@ -16,7 +16,12 @@
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <root level="error">
+    <logger name="com.example.interceptors.SpringMvcInterceptor" level="debug" additivity="info">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+
+    <root level="info">
         <appender-ref ref="CONSOLE"/>
     </root>
 
