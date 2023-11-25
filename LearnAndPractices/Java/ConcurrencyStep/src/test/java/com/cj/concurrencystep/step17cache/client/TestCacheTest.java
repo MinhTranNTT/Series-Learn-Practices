@@ -7,7 +7,9 @@ import com.cj.concurrencystep.step17cache.listener.RefreshListener;
 import com.cj.concurrencystep.step17cache.listener.RemovalListener;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
