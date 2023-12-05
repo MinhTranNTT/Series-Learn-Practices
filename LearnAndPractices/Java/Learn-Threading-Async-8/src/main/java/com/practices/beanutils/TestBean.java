@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class TestBean {
-    public static void main(String[] args) {
+    public static void main01(String[] args) {
         Student successResult = new Student(200, "success", "data");
         Student errorResult = new Student(null, "error", null);
         System.out.println(successResult + " " + errorResult);
@@ -15,6 +15,11 @@ public class TestBean {
 
         MergeUtil.mergeOverride(successResult, errorResult);
         System.out.println(errorResult);
+    }
+
+    public static void main(String[] args) {
+        int i = Runtime.getRuntime().availableProcessors();
+        System.out.println(i);
     }
 }
 
