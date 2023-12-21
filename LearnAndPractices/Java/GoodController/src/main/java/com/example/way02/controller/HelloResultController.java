@@ -8,17 +8,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.apache.pdfbox.io.MemoryUsageSetting;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/helloResult")
@@ -92,7 +97,7 @@ public class HelloResultController {
 
     private CountDownLatch latch = new CountDownLatch(2);
 
-    @Scheduled(fixedRate = 10000)
+    // @Scheduled(fixedRate = 10000)
     public void performTask7() throws InterruptedException {
         log.info("Scheduled task executed at 10s");
         // TimeUnit.SECONDS.sleep(7);
@@ -100,7 +105,7 @@ public class HelloResultController {
         checkBothDone();
     }
 
-    @Scheduled(fixedRate = 60000)
+    // @Scheduled(fixedRate = 60000)
     public void performTask10() {
         log.info("Scheduled task executed at 1p");
         latch.countDown();
@@ -116,6 +121,153 @@ public class HelloResultController {
         }
         latch = new CountDownLatch(2);
     }
+
+
+    @GetMapping("merge1")
+    public void mergeV() {
+        List<String> pdfUrls = initListUrl();
+        try {
+            PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+            List<InputStream> inputStreamsFromUrls = createInputStreamsFromUrls(pdfUrls);
+            pdfMergerUtility.addSources(inputStreamsFromUrls);
+            String name = "D:\\aaaaaaa\\TestPdfMerge\\" + "Merge2PDF.pdf";
+            pdfMergerUtility.setDestinationFileName(name);
+
+            pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+
+            for (InputStream i : inputStreamsFromUrls) {
+                i.close();
+            }
+            inputStreamsFromUrls.clear();
+
+            System.out.println("Merge Successfully: " + name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("merge2")
+    public void mergeV2() throws IOException {
+        List<String> pdfUrls = initListUrl();
+        PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+        WeakReference<Object> weakReference = new WeakReference<>(pdfMergerUtility);
+        InputStream inputStream = null;
+        WeakReference<Object> weakReference2 = new WeakReference<>(inputStream);
+        try {
+
+            String name = "D:\\aaaaaaa\\TestPdfMerge\\" + "Merge2PDF.pdf";
+            for (String pdfUrl : pdfUrls) {
+                // try (InputStream inputStream = createInputStreamFromUrl(pdfUrl);) {
+                //     pdfMergerUtility.addSource(inputStream);
+                // }
+
+                inputStream = createInputStreamFromUrl(pdfUrl);
+                pdfMergerUtility.addSource(inputStream);
+            }
+            pdfMergerUtility.setDestinationFileName(name);
+            // pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+            pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+
+            System.out.println("Merge Successfully: " + name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            pdfMergerUtility = null;
+            inputStream = null;
+        }
+    }
+
+    @GetMapping("merge5")
+    public void mergeV5() {
+        List<String> pdfUrls = initListUrl().stream().limit(2).collect(Collectors.toList());
+        PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+        InputStream inputStream = null;
+        try {
+
+            String name = "D:\\aaaaaaa\\TestPdfMerge\\" + "Merge2PDF.pdf";
+            for (String pdfUrl : pdfUrls) {
+                inputStream = createInputStreamFromUrl(pdfUrl);
+                pdfMergerUtility.addSource(inputStream);
+            }
+            pdfMergerUtility.setDestinationFileName(name);
+            pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+
+            System.out.println("Merge Successfully: " + name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            pdfMergerUtility = null;
+            inputStream = null;
+        }
+    }
+
+    @GetMapping("merge3")
+    public void mergeV3() {
+        List<String> pdfUrls = initListUrl();
+        String destinationPath = "D:\\aaaaaaa\\TestPdfMerge\\Merge2PDF.pdf";
+
+        try {
+            PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+
+            for (String pdfUrl : pdfUrls) {
+                try {
+                    pdfMergerUtility.addSource(pdfUrl);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            pdfMergerUtility.setDestinationFileName(destinationPath);
+            pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupTempFileOnly());
+
+            System.out.println("Merge Successfully: " + destinationPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("merge4")
+    public void mergeV4() {
+        try {
+            PDFMergerUtility pdfMergerUtility = new PDFMergerUtility();
+
+            pdfMergerUtility.addSource("Path");
+            pdfMergerUtility.addSource("Path");
+
+            String name = "D:\\aaaaaaa\\TestPdfMerge\\" + "Merge2PDF.pdf";
+            pdfMergerUtility.setDestinationFileName(name);
+
+            pdfMergerUtility.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
+
+            System.out.println("Merge Successfully: " + name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static List<InputStream> createInputStreamsFromUrls(List<String> urls) {
+        List<InputStream> inputStreams = new ArrayList<>();
+        for (String url : urls) {
+            try {
+                inputStreams.add(new URL(url).openStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return inputStreams;
+    }
+
+    public static List<String> initListUrl() {
+        List<String> lst = new ArrayList<>();
+
+        return lst;
+    }
+
+    private static InputStream createInputStreamFromUrl(String url) throws IOException {
+        return new URL(url).openStream();
+    }
+
 }
 
 @Getter
