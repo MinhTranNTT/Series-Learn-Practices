@@ -268,6 +268,18 @@ public class HelloResultController {
         return new URL(url).openStream();
     }
 
+    @GetMapping("students")
+    public List<Student> getStudents() {
+        List<Student> students = new ArrayList<>(1_000_000);
+        for (int i = 0; i < 1_000_000; i++) {
+            Student student = new Student(++i, "Student"+i);
+            students.add(student);
+        }
+        return students;
+    }
+
+
+
 }
 
 @Getter
