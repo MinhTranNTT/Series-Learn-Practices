@@ -24,6 +24,11 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
         byte[] responseBody = StreamUtils.copyToByteArray(response.getBody());
         logResponse(response, responseBody);
         return new CustomClientHttpResponse(response, responseBody);
+
+        // try (CustomResponseWrapper responseWrapper = new CustomResponseWrapper(execution.execute(request, body))) {
+        //     logResponse(responseWrapper);
+        //     return new CustomClientHttpResponse(responseWrapper.getResponse(), responseWrapper.getResponseBody());
+        // }
     }
 
     private void logRequest(HttpRequest request, byte[] body) {
@@ -45,6 +50,7 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
         log.info("==========================request end================================================");
     }
 
+    // way 1
     private void logResponse(ClientHttpResponse response, byte[] responseBody) throws IOException {
 
         // if (log.isDebugEnabled()) {
@@ -64,4 +70,15 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
         log.info("Response body: {}", new String(responseBody, Charset.defaultCharset()));
         log.info("=======================response end=================================================");
     }
+
+    // way 2
+    // private void logResponse(CustomResponseWrapper responseWrapper) throws IOException {
+    //     log.info("============================response begin==========================================");
+    //     log.info("Status code  : {}", responseWrapper.getResponse().getStatusCode());
+    //     log.info("Status text  : {}", responseWrapper.getResponse().getStatusText());
+    //     log.info("Headers      : {}", responseWrapper.getResponse().getHeaders());
+    //     log.info("Response body: {}", new String(responseWrapper.getResponseBody(), StandardCharsets.UTF_8));
+    //     log.info("=======================response end=================================================");
+    // }
+
 }

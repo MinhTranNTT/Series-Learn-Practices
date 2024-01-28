@@ -2,6 +2,7 @@ package com.example.springrest;
 
 import com.example.springrest.domain.Hello;
 import com.example.springrest.domain.User;
+import com.example.springrest.enums.HelloCondition;
 import com.example.springrest.enums.HelloReturnCode;
 import com.example.springrest.utils.JsonCustomUtils;
 import com.google.gson.Gson;
@@ -103,6 +104,35 @@ class SpringRestApplicationTests {
             }
         }
 
+    }
+
+    @Test
+    public void testHelloCustomAdvance2() {
+        String uri = "http://localhost:8089/hello";
+        Hello[] body = restTemplate.getForEntity(uri, Hello[].class).getBody();
+        List<Hello> helloList = Arrays.asList(body);
+
+        for (Hello hello : helloList) {
+            HelloReturnCode helloReturnCode = hello.checkValidation2();
+            if (helloReturnCode != HelloReturnCode.OK) {
+                System.out.println("FAIL: " + helloReturnCode.getMessage());
+            }
+        }
+
+    }
+
+    @Test
+    public void testHelloCustomAdvanceHibernate() {
+        String uri = "http://localhost:8089/hello";
+        Hello[] body = restTemplate.getForEntity(uri, Hello[].class).getBody();
+        List<Hello> helloList = Arrays.asList(body);
+
+        for (Hello hello : helloList) {
+            HelloReturnCode helloReturnCode = hello.checkValidation();
+            if (helloReturnCode != HelloReturnCode.OK) {
+                System.out.println("FAIL: " + helloReturnCode.getMessage());
+            }
+        }
     }
 
 }

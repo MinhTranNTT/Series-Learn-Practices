@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,12 +22,21 @@ public enum HelloReturnCode {
     private String code;
     private String message;
 
+    // public static HelloReturnCode of(String code) {
+    //     for (HelloReturnCode value : HelloReturnCode.values()) {
+    //         if (value.code.equals(code)) {
+    //             return value;
+    //         }
+    //     }
+    //     return SYSTEM_ERROR;
+    // }
+
+    // improve
     public static HelloReturnCode of(String code) {
-        for (HelloReturnCode value : HelloReturnCode.values()) {
-            if (value.code.equals(code)) {
-                return value;
-            }
-        }
-        return SYSTEM_ERROR;
+        return Arrays.stream(values())
+                .filter(value -> value.code.equals(code))
+                .findFirst()
+                .orElse(SYSTEM_ERROR);
     }
+
 }

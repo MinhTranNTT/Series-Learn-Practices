@@ -2,13 +2,15 @@ package com.example.springrest.domain;
 
 import com.example.springrest.enums.HelloCondition;
 import com.example.springrest.enums.HelloReturnCode;
+import com.example.springrest.otherWay.ValidationCondition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -64,6 +66,15 @@ public class Hello {
             }
         }
         return HelloReturnCode.OK;
+    }
+
+    public HelloReturnCode checkValidation2() {
+        List<HelloReturnCode> validationResults = Arrays.stream(ValidationCondition.values())
+                .map(condition -> condition.validate(this))
+                .collect(Collectors.toList());
+
+        return validationResults.stream().filter(result -> result != HelloReturnCode.OK).findFirst()
+                .orElse(HelloReturnCode.OK);
     }
 
 }
