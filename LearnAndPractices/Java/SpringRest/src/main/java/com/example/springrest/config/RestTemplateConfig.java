@@ -1,9 +1,11 @@
 package com.example.springrest.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -17,23 +19,33 @@ import java.util.List;
 
 @Configuration
 public class RestTemplateConfig {
+
+    private final LoggingInterceptor loggingInterceptor;
+
+    public RestTemplateConfig(LoggingInterceptor loggingInterceptor) {
+        this.loggingInterceptor = loggingInterceptor;
+    }
+
     @Bean
     @ConditionalOnMissingBean({ RestOperations.class, RestTemplate.class })
     public RestTemplate restTemplate(ClientHttpRequestFactory factory) {
 
         RestTemplate restTemplate = new RestTemplate(factory);
 
-        // 使用 utf-8 编码集的 conver 替换默认的 conver（默认的 string conver 的编码集为"ISO-8859-1"）
+        // Use convert with the utf-8 encoding set to replace the default convert
+        // (the default string convert encoding set is "ISO-8859-1")
         List<HttpMessageConverter<?>> messageConverters = restTemplate.getMessageConverters();
         Iterator<HttpMessageConverter<?>> iterator = messageConverters.iterator();
         while (iterator.hasNext()) {
             HttpMessageConverter<?> converter = iterator.next();
             if (converter instanceof StringHttpMessageConverter) {
-                // iterator.remove();
-                converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+                ((StringHttpMessageConverter) converter).setDefaultCharset(StandardCharsets.UTF_8);
             }
         }
-        // messageConverters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
+
+        List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
+        interceptors.add(new LoggingInterceptor());
+        restTemplate.setInterceptors(interceptors);
 
         return restTemplate;
     }

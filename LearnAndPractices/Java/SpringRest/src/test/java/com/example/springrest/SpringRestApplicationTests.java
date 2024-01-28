@@ -1,7 +1,12 @@
 package com.example.springrest;
 
+import com.example.springrest.domain.Hello;
 import com.example.springrest.domain.User;
+import com.example.springrest.enums.HelloReturnCode;
 import com.example.springrest.utils.JsonCustomUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,6 +67,42 @@ class SpringRestApplicationTests {
         HttpHeaders headers = new HttpHeaders();
         headers.set("accept", "application/vnd.api.v1+json");
         return new HttpEntity<>(headers);
+    }
+
+    @Test
+    public void testHelloCustom() {
+        String uri = "http://localhost:8089/hello/improve";
+
+        // Hello[] body = restTemplate.getForEntity(uri, Hello[].class).getBody();
+        // List<Hello> helloList = Arrays.asList(body);
+
+        String response = restTemplate.getForEntity(uri, String.class).getBody();
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        Type type = new TypeToken<List<Hello>>() {}.getType();
+        List<Hello> helloList = gson.fromJson(response, type);
+        boolean isValid = helloList.stream().allMatch(Hello.validateHello);
+        System.out.println("Is valid: " + isValid);
+
+
+    }
+
+    @Test
+    public void testHelloCustomAdvance() {
+        String uri = "http://localhost:8089/hello";
+        Hello[] body = restTemplate.getForEntity(uri, Hello[].class).getBody();
+        List<Hello> helloList = Arrays.asList(body);
+
+        // Gson gson = new GsonBuilder().serializeNulls().create();
+        // Type type = new TypeToken<List<Hello>>() {}.getType();
+        // List<Hello> helloList = gson.fromJson(response, type);
+
+        for (Hello hello : helloList) {
+            HelloReturnCode helloReturnCode = hello.checkValidation();
+            if (helloReturnCode != HelloReturnCode.OK) {
+                System.out.println("FAIL: " + helloReturnCode.getMessage());
+            }
+        }
+
     }
 
 }
