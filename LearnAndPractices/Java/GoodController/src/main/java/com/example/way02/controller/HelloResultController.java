@@ -278,7 +278,29 @@ public class HelloResultController {
         return students;
     }
 
+    public static void main(String[] args) {
+        List<Integer> listChan = new ArrayList<Integer>();
+        List<Integer> listLe = new ArrayList<Integer>();
+        List<Integer> listChiaHetCho5 = new ArrayList<Integer>();
+        for (int i = 1; i < 11; i++) {
 
+            if (i%2 == 0) {
+                listChan.add(i);
+                if (i%10 == 0) {
+                    listChiaHetCho5.add(i);
+                }
+            } else {
+                if (i%5 == 0) {
+                    listChiaHetCho5.add(i);
+                }
+                listLe.add(i);
+            }
+        }
+
+        System.out.println(listChan);
+        System.out.println(listLe);
+        System.out.println(listChiaHetCho5);
+    }
 
 }
 
