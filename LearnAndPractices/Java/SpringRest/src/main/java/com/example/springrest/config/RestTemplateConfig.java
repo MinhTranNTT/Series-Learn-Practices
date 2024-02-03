@@ -9,6 +9,9 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.retry.backoff.ExponentialBackOffPolicy;
+import org.springframework.retry.policy.SimpleRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
@@ -45,6 +48,7 @@ public class RestTemplateConfig {
 
         List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
         interceptors.add(new LoggingInterceptor());
+        interceptors.add(new RetryInterceptor(this.retryTemplate()));
         restTemplate.setInterceptors(interceptors);
 
         return restTemplate;
@@ -59,5 +63,24 @@ public class RestTemplateConfig {
         // ms
         factory.setConnectTimeout(15000);
         return factory;
+    }
+
+    @Bean
+    public RetryTemplate retryTemplate() {
+        RetryTemplate retryTemplate = new RetryTemplate();
+        //do it 3 times before making a decision
+        SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();
+        simpleRetryPolicy.setMaxAttempts(3);
+
+        retryTemplate.setRetryPolicy(simpleRetryPolicy);
+
+        // Set BackOff Policy: The wait time between retries will increase exponentially
+        ExponentialBackOffPolicy backOffPolicy = new ExponentialBackOffPolicy();
+        backOffPolicy.setInitialInterval(5_000); // 30s
+        backOffPolicy.setMultiplier(1); // increase exponentially
+        backOffPolicy.setMaxInterval(5_000);
+
+        retryTemplate.setBackOffPolicy(backOffPolicy);
+        return retryTemplate;
     }
 }

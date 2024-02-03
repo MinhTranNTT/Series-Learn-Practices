@@ -33,12 +33,17 @@ public class HelloController {
         Hello hello1 = new Hello();
         hello1.setName("TEO");
         hello1.setOrderName("Order1");
+        hello1.setCustomerName("Cus1");
+        hello1.setAge(12);
+        hello1.setStock(1);
         hello1.setImageList(images);
 
         Hello hello2 = new Hello();
         hello2.setName("TY");
         hello2.setAge(12);
-        hello2.setStock(0);
+        hello2.setCustomerName("Cus2");
+        hello2.setOrderName("Order2");
+        hello2.setStock(1);
         hello2.setImageList(images);
 
         return Arrays.asList(hello1,hello2);

@@ -18,8 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 class SpringRestApplicationTests {
@@ -110,7 +112,11 @@ class SpringRestApplicationTests {
     public void testHelloCustomAdvance2() {
         String uri = "http://localhost:8089/hello";
         Hello[] body = restTemplate.getForEntity(uri, Hello[].class).getBody();
-        List<Hello> helloList = Arrays.asList(body);
+        List<Hello> helloList = new ArrayList<>();
+        if (body != null) {
+            helloList = Arrays.asList(body);
+        }
+
 
         for (Hello hello : helloList) {
             HelloReturnCode helloReturnCode = hello.checkValidation2();

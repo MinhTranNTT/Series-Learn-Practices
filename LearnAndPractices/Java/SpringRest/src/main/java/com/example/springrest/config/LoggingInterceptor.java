@@ -1,5 +1,9 @@
 package com.example.springrest.config;
 
+import com.example.springrest.utils.FolderUtils;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -11,6 +15,9 @@ import org.springframework.util.StreamUtils;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Slf4j
 @Component
@@ -22,6 +29,12 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
         logRequest(request, body);
         ClientHttpResponse response = execution.execute(request, body);
         byte[] responseBody = StreamUtils.copyToByteArray(response.getBody());
+
+        if (response instanceof EmptyClientHttpResponse) {
+            logResponseTimeOut(response, responseBody);
+            return new CustomClientHttpResponse(response, responseBody);
+        }
+
         logResponse(response, responseBody);
         return new CustomClientHttpResponse(response, responseBody);
 
@@ -29,6 +42,14 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
         //     logResponse(responseWrapper);
         //     return new CustomClientHttpResponse(responseWrapper.getResponse(), responseWrapper.getResponseBody());
         // }
+    }
+
+    private void logResponseTimeOut(ClientHttpResponse response, byte[] responseBody) throws IOException {
+        log.info("============================response begin==========================================");
+        log.info("Status code  : {}", "502 Gateway Timeout");
+        log.info("Status text  : Gateway Timeout");
+        log.info("Headers      : {}", response.getHeaders());
+        log.info("=======================response end=================================================");
     }
 
     private void logRequest(HttpRequest request, byte[] body) {
@@ -48,6 +69,34 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
         log.info("Headers     : {}", request.getHeaders());
         log.info("Request body: {}", new String(body, StandardCharsets.UTF_8));
         log.info("==========================request end================================================");
+
+        // write log to file
+        String fullPathTarget = FolderUtils.getFullPathTarget();
+        String fileName = FolderUtils.formatDateTime() + ".txt";
+        System.out.println("fullPathTarget: " + fullPathTarget);
+        StringBuilder sb = new StringBuilder();
+        sb.append(System.lineSeparator());
+        sb.append("===========================request begin================================================");
+        sb.append(System.lineSeparator());
+        sb.append("URI         : " + request.getURI());
+        sb.append(System.lineSeparator());
+        sb.append("Method      : " + request.getMethod());
+        sb.append(System.lineSeparator());
+        sb.append("Headers     : " + request.getHeaders());
+        sb.append(System.lineSeparator());
+        sb.append("Request body: " + new String(body, StandardCharsets.UTF_8));
+        sb.append(System.lineSeparator());
+        sb.append("==========================request end================================================");
+        sb.append(System.lineSeparator());
+
+        Path finalPath = Paths.get(fullPathTarget, fileName);
+        if(Files.exists(finalPath)) {
+            FolderUtils.appendToFile(finalPath, sb.toString());
+            System.out.println("Content appended to existing file.");
+        } else {
+            FolderUtils.createAndWriteToFile(finalPath, sb.toString());
+            System.out.println("File created and content written.");
+        }
     }
 
     // way 1
@@ -69,6 +118,38 @@ public class LoggingInterceptor implements ClientHttpRequestInterceptor {
         // log.info("Response body: {}", StreamUtils.copyToString(response.getBody(), Charset.defaultCharset()));
         log.info("Response body: {}", new String(responseBody, Charset.defaultCharset()));
         log.info("=======================response end=================================================");
+
+        // write log to file
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(new String(responseBody, Charset.defaultCharset()));
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        String fullPathTarget = FolderUtils.getFullPathTarget();
+        String fileName = FolderUtils.formatDateTime() + ".txt";
+        System.out.println("fullPathTarget: " + fullPathTarget);
+        StringBuilder sb = new StringBuilder();
+        sb.append(System.lineSeparator());
+        sb.append("===========================response begin================================================");
+        sb.append(System.lineSeparator());
+        sb.append("Status code  : " + response.getStatusCode());
+        sb.append(System.lineSeparator());
+        sb.append("Status text  : " + response.getStatusText());
+        sb.append(System.lineSeparator());
+        sb.append("Headers      : " + response.getHeaders());
+        sb.append(System.lineSeparator());
+        sb.append("Response body: " + objectMapper.writeValueAsString(jsonNode));
+        sb.append(System.lineSeparator());
+        sb.append("==========================response end================================================");
+        sb.append(System.lineSeparator());
+
+        Path finalPath = Paths.get(fullPathTarget, fileName);
+        if(Files.exists(finalPath)) {
+            FolderUtils.appendToFile(finalPath, sb.toString());
+            System.out.println("Content appended to existing file.");
+        } else {
+            FolderUtils.createAndWriteToFile(finalPath, sb.toString());
+            System.out.println("File created and content written.");
+        }
     }
 
     // way 2
