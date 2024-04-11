@@ -6,25 +6,21 @@ import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
-/**
- * @author: jiangjs
- * @description: 实现定时任务线程
- * @date: 2023/2/16 15:31
- **/
+// Implement scheduled task threads
 @Slf4j
 @EnableAsync
 public class SchedulingTaskRunnable<T> implements Runnable {
     /**
-     * 其他参数
+     * Other parameters
      */
     private final T other;
     /**
-     * 定时任务类
+     * Scheduled tasks
      */
     private final String clazz;
 
     /**
-     * 定时任务方法
+     * Timed task method
      */
     private final String methodName;
 
@@ -48,7 +44,7 @@ public class SchedulingTaskRunnable<T> implements Runnable {
                 method.invoke(bean);
             }
         }catch (Exception e){
-            log.error("获取方法信息报错：{}",e.getMessage());
+            log.error("Getting method information error：{}",e.getMessage());
         }
     }
 }
