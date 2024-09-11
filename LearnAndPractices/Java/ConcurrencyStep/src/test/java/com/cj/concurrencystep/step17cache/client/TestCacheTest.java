@@ -5,6 +5,7 @@ import com.cj.concurrencystep.step17cache.listener.AddListener;
 import com.cj.concurrencystep.step17cache.listener.ReadListener;
 import com.cj.concurrencystep.step17cache.listener.RefreshListener;
 import com.cj.concurrencystep.step17cache.listener.RemovalListener;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 class TestCacheTest {
     private CacheUtils cache = null;
 
@@ -22,18 +24,20 @@ class TestCacheTest {
         cache = new CacheUtils(-1, false);
         cache.put("key1", "value1", 2);
         System.out.println(cache.get("key1"));
-//        Thread.sleep(2500);
-        Thread.sleep(1900);
+        Thread.sleep(2500);
+        // Thread.sleep(1900);
         System.out.println(cache.get("key1"));
     }
 
     @Test
     public void testExpireThread() throws InterruptedException {
         cache = new CacheUtils(5, true);
-        cache.put("key1", "value1", 2);
-        System.out.println(cache.containKey("key1"));
+        // cache.put("key1", "value1", 2);
+        cache.put("key1", "value1", 7);
+        log.info("{}", cache.containKey("key1"));
+        // Thread.sleep(4900);
         Thread.sleep(7000);
-        System.out.println(cache.containKey("key1"));
+        log.info("{}", cache.containKey("key1"));
     }
 
     @Test

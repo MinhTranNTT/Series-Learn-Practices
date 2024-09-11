@@ -28,6 +28,7 @@ public class CacheUtils  implements ICache {
     private void initConfig(CacheGlobal cacheGlobal) {
         if (cacheGlobal.isNeedClean()) {
             Thread cleanThread = new Thread(new CleanUpThread(cacheGlobal.getCheckTime(), this));
+            cleanThread.start();
         }
     }
 

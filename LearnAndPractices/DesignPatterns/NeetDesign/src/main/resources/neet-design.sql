@@ -27,7 +27,31 @@ create table t_schedule_task(
 
 select * from t_schedule_task;
 
+-- 
+use neetdesign;
 
+select * from schedule_setting;
+select * from t_schedule_task;
+
+# create database if not exists neetdesign;
+# use neetdesign;
+
+create table user(
+                     id int unsigned primary key auto_increment comment 'ID',
+                     name varchar(100) comment 'name',
+                     age tinyint unsigned comment 'age',
+                     gender tinyint unsigned comment 'Gender, 1: male, 2: female',
+                     phone varchar(11) comment 'Phone number'
+) comment 'user table';
+
+insert into user(id, name, age, gender, phone) VALUES (null,'Apple',55,'1','18800000000');
+insert into user(id, name, age, gender, phone) VALUES (null,'Orange',45,'1','18800000001');
+insert into user(id, name, age, gender, phone) VALUES (null,'Banana',38,'1','18800000002');
+insert into user(id, name, age, gender, phone) VALUES (null,'Cherry',42,'2','18800000003');
+insert into user(id, name, age, gender, phone) VALUES (null,'Watermelon',37,'1','18800000004');
+insert into user(id, name, age, gender, phone) VALUES (null,'Lemon',48,'1','18800000005');
+
+select * from user;
 
 
 
