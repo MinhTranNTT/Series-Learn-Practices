@@ -1,8 +1,8 @@
-package org.crocodile.session1.service;
+package org.crocodile.session2v330.service;
 
 import lombok.RequiredArgsConstructor;
-import org.crocodile.session1.model.Customer;
-import org.crocodile.session1.repository.CustomerRepository;
+import org.crocodile.session2v330.domain.Customer;
+import org.crocodile.session2v330.repository.CustomerRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

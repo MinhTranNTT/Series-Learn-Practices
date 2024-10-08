@@ -1,4 +1,4 @@
-package org.crocodile.session1.model;
+package org.crocodile.session2v330.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;

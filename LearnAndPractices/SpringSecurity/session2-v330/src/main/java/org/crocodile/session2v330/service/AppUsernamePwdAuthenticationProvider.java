@@ -1,4 +1,4 @@
-package org.crocodile.session1.service;
+package org.crocodile.session2v330.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;

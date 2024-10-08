@@ -1,6 +1,6 @@
-package org.crocodile.session1.repository;
+package org.crocodile.session2v330.repository;
 
-import org.crocodile.session1.model.Customer;
+import org.crocodile.session2v330.domain.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
