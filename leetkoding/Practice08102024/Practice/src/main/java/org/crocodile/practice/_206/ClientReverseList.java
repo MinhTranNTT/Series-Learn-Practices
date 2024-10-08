@@ -20,9 +20,19 @@ public class ClientReverseList {
     public static void main(String[] args) {
         ListNode head = getSingleLinkedList();
         printListNode(head);
-        ListNode reverseListNode = reverseListNode(head);
-        // head = reverseListNode(head);
+        // ListNode reverseListNode = reverseListNode(head);
+        ListNode reverseListNode = reverseList(head);
         printListNode(reverseListNode);
+    }
+
+    public static ListNode reverseList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode p = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return p;
     }
 
     private static ListNode reverseListNode(ListNode head) {
