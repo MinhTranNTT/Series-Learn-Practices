@@ -1,45 +1,3 @@
--- CREATE DATABASE spring_security;
-USE spring_security;
-
--- create table users(username varchar(50) not null primary key,password varchar(500) not null,enabled boolean not null);
--- create table authorities (username varchar(50) not null,authority varchar(50) not null,constraint fk_authorities_users foreign key(username) references users(username));
--- create unique index ix_auth_username on authorities (username,authority);
-
--- INSERT IGNORE INTO `users` VALUES ('user', '{noop}CauBeButChi@2024!!!', '1');
-INSERT IGNORE INTO `authorities` VALUES ('user', 'read');
-
--- INSERT IGNORE INTO `users` VALUES ('admin', '{bcrypt}$2a$12$.NDUkFUo2hT4BLq9LXmQluk7YXShmWpIGPybrmVy8KWaf6d9HgeM6', '1');
-INSERT IGNORE INTO `authorities` VALUES ('admin', 'admin');
-
-SELECT * FROM `users`;
-SELECT * FROM `authorities`;
-select username,password,enabled from users where username = 'user';
-
-CREATE TABLE `customer` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(45) NOT NULL,
-  `pwd` varchar(200) NOT NULL,
-  `role` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-);
-
-INSERT  INTO `customer` (`email`, `pwd`, `role`) VALUES 
-('happy@example.com', '{noop}CauBeButChi@2024!!!', 'read'), 
-('admin@example.com', '{bcrypt}$2a$12$.NDUkFUo2hT4BLq9LXmQluk7YXShmWpIGPybrmVy8KWaf6d9HgeM6', 'admin');
-
-SELECT * FROM customer;
-
--- Session 9
-use spring_security;
-show tables from spring_security;
-select * from `authorities`;
-select * from `customer`;
-select * from `users`;
--- 
-create database `spring_security_ss9`;
-show tables from spring_security_ss9;
-use spring_security_ss9;
-
 drop table `authorities`;
 drop table `users`;
 drop table `customer`;
@@ -88,6 +46,8 @@ CREATE TABLE `account_transactions` (
   CONSTRAINT `accounts_ibfk_2` FOREIGN KEY (`account_number`) REFERENCES `accounts` (`account_number`) ON DELETE CASCADE,
   CONSTRAINT `acct_user_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE
 );
+
+
 
 INSERT INTO `account_transactions` (`transaction_id`, `account_number`, `customer_id`, `transaction_dt`, `transaction_summary`, `transaction_type`,`transaction_amt`,
 `closing_balance`, `create_dt`)  VALUES (UUID(), 1865764534, 1, DATE_SUB(CURDATE(), INTERVAL 7 DAY), 'Coffee Shop', 'Withdrawal', 30,34500,DATE_SUB(CURDATE(), INTERVAL 7 DAY));
@@ -201,43 +161,3 @@ CREATE TABLE `contact_messages` (
   `create_dt` date DEFAULT NULL,
   PRIMARY KEY (`contact_id`)
 );
-
-CREATE TABLE `authorities` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `customer_id` int NOT NULL,
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `customer_id` (`customer_id`),
-  CONSTRAINT `authorities_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
-);
-
-INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'VIEWACCOUNT');
-INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'VIEWCARDS');
-INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'VIEWLOANS');
-INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'VIEWBALANCE');
-
-DELETE FROM `authorities`;
-
-INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'ROLE_USER');
-INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'ROLE_ADMIN');
-
-select * from `authorities`;
-select * from `customer`;
-select * from `users`;
--- --------- SESSION 08
-create database `spring_security_ss8`;
-use `spring_security_ss8`;
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,0 +1,275 @@
+{
+	"info": {
+		"_postman_id": "497cb80d-1093-447d-8d30-f37587701832",
+		"name": "SpringSecurity-Learning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34016806"
+	},
+	"item": [
+		{
+			"name": "Session-1",
+			"item": [
+				{
+					"name": "/welcome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-local}}/welcome",
+							"host": [
+								"{{host-local}}"
+							],
+							"path": [
+								"welcome"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/myAccount",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "minhtran@gmail.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "CauBeButChi@2024!!!",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/myAccount",
+							"path": [
+								"myAccount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/myBalance",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "minhtran@gmail.com1",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "CauBeButChi@2024!!!",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/myBalance",
+							"path": [
+								"myBalance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/myCards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-local}}/myCards",
+							"host": [
+								"{{host-local}}"
+							],
+							"path": [
+								"myCards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/contact",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-local}}/contact",
+							"host": [
+								"{{host-local}}"
+							],
+							"path": [
+								"contact"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/myLoans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host-local}}/myLoans",
+							"host": [
+								"{{host-local}}"
+							],
+							"path": [
+								"myLoans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/notices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/notices",
+							"path": [
+								"notices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"minhtran@gmail.com\",\r\n    \"pwd\": \"CauBeButChi@2024!!!\",\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "/register",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// pm.environment.set(\"host-local\", \"http://localhost:8080\");\r",
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Session-08",
+			"item": [
+				{
+					"name": "/register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"MinhTran\",\r\n    \"email\": \"minhtran@gmail.com\",\r\n    \"mobileNumber\": \"0123456789\",\r\n    \"pwd\": \"CauBeButChi@2024\",\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "/register",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/notices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "/notices",
+							"path": [
+								"notices"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.url.protocol='http'\r",
+					"pm.request.url.host='localhost'\r",
+					"pm.request.url.port='8080'\r",
+					"// pm.request.url.port='8088'"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host-local",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
