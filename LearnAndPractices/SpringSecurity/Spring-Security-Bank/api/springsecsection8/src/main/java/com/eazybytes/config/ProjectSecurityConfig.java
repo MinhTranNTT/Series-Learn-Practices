@@ -2,7 +2,10 @@ package com.eazybytes.config;
 
 import com.eazybytes.exceptionhandling.CustomAccessDeniedHandler;
 import com.eazybytes.exceptionhandling.CustomBasicAuthenticationEntryPoint;
+import com.eazybytes.filter.AuthoritiesLoggingAfterFilter;
+import com.eazybytes.filter.AuthoritiesLoggingAtFilter;
 import com.eazybytes.filter.CsrfCookieFilter;
+import com.eazybytes.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +35,7 @@ public class ProjectSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
         http.securityContext(contextConfig -> contextConfig.requireExplicitSave(false))
-                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) // JSESSIONID
                 .cors(corsConfig -> corsConfig.configurationSource(new CorsConfigurationSource() {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
@@ -49,9 +52,26 @@ public class ProjectSecurityConfig {
                         .ignoringRequestMatchers( "/contact","/register")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Only HTTP
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
+
+                        /*.requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+                        .requestMatchers("/myBalance").hasAnyAuthority("VIEWBALANCE", "VIEWACCOUNT")
+                        .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                        .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+                        .requestMatchers("/user").authenticated()*/
+
+                        // .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
+
+                        .requestMatchers("/myAccount").hasRole("USER")
+                        .requestMatchers("/myBalance").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/myLoans").hasRole("USER")
+                        .requestMatchers("/myCards").hasRole("USER")
+                        .requestMatchers("/user").authenticated()
+
                         .requestMatchers("/notices", "/contact", "/error", "/register", "/invalidSession").permitAll());
         http.formLogin(withDefaults());
         http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
