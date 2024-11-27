@@ -1,10 +1,10 @@
 <template>
     <div class="login_container">
         <div class="login_form">
-            <h3 class="title">稻草快速开发平台</h3>
+            <h3 class="title">Login Page</h3>
             <el-form ref="formRef" :model="loginForm" label-width="auto"> 
                 <el-form-item >
-                    <el-input v-model="loginForm.account"  placeholder="ABC" >
+                    <el-input v-model="loginForm.account"  placeholder="username" >
                         <template #prefix>
                             <el-icon class="el-input__icon"><User /></el-icon>
                         </template>
@@ -12,7 +12,7 @@
                 </el-form-item>
                 
                 <el-form-item >
-                    <el-input v-model="loginForm.password"  placeholder="ABCD" >
+                    <el-input v-model="loginForm.password" placeholder="password" >
                         <template #prefix>
                             <el-icon class="el-input__icon"><Lock /></el-icon>
                         </template>
@@ -21,9 +21,9 @@
 
                 <div class="rememberMe">
                     <!-- remember me -->
-                    <el-checkbox v-model="loginForm.rememberMe" label="aaa" size="large"/>
+                    <el-checkbox v-model="loginForm.rememberMe" label="remember me" size="large"/>
                     <!-- forget password -->
-                    <el-text class="forgetpassword" type="primary">rememberMe</el-text>
+                    <el-text class="forgetpassword" type="primary">Forgot password</el-text>
                 </div>
                 <el-divider>XinChao</el-divider>
                 <div class="other_login">
@@ -33,7 +33,7 @@
                 </div>
                 <el-form-item>
                         <!-- 按钮 -->
-                        <el-button style="width: 100%;" type="primary" @click="handleLogin">登录</el-button>
+                        <el-button style="width: 100%;" type="primary" @click="handleLogin">Login</el-button>
                 </el-form-item>  
 
             </el-form>
@@ -42,10 +42,10 @@
 </template>
 
 <script setup>
-    // 导入ref
+    // import ref
     import { ref } from 'vue';
     
-    // 导入login方法
+    // import login method
     import { login } from '@/api/auth/index.js'
 
     const loginForm = ref({
@@ -61,6 +61,8 @@
             if(res.data.code == 200){
                 console.log("Okie====>",res);
             }
+        }).catch((err) => {
+          console.log("Catch");
         })
     };
 

@@ -1,4 +1,4 @@
-package com.pet.auth.domain.entity;
+package com.pet.common.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;

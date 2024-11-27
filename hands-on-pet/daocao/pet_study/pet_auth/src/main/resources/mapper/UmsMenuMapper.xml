@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.pet.auth.domain.mapper.UmsMenuMapper">
+<mapper namespace="com.pet.common.domain.mapper.UmsMenuMapper">
+
+    <!--根据roleid批量查询结果-->
+    <select id="selectByRoleIds" resultType="com.pet.common.domain.entity.UmsMenu">
+        select um.id,um.parent_id,um.menu_name,um.sort,um.menu_type,um.path,um.component_path ,um.perms,um.icon
+        ,um.create_time,update_time
+        from ums_menu um left join ums_role_menu urm on um.id = urm.menu_id
+        where urm.role_id in
+        <!-- collection是要迭代的集合 ,um.remark -->
+        <foreach collection="roleIds" open="(" close=")" separator="," item="roleId">
+            #{roleId}
+        </foreach>
+        or um.perms=""
+        and um.deleted = 0 and um.status = 0
+    </select>
+
 </mapper>

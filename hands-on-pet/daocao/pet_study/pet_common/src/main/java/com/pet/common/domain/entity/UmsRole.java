@@ -1,4 +1,4 @@
-package com.pet.auth.domain.entity;
+package com.pet.common.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 public class UmsRole implements Serializable {
     @TableId
-    private Long id;
+    private Long roleId;
     private String roleLabel;
     private String roleName;
     private Integer sort;

@@ -1,4 +1,4 @@
-package com.pet.auth.domain.dto;
+package com.pet.common.domain.dto;
 
 
 import lombok.Data;

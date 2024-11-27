@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan("com.pet.auth.domain.mapper") // 项目启动扫描所有mapper接口所在的包
+@MapperScan("com.pet.common.domain.mapper") // 项目启动扫描所有mapper接口所在的包
 public class MyBatisPlusConfig {
     /**
      * 添加分页插件

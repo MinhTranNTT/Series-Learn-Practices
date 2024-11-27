@@ -1,7 +1,7 @@
-package com.pet.auth.domain.mapper;
+package com.pet.common.domain.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.pet.auth.domain.entity.UmsRole;
+import com.pet.common.domain.entity.UmsRole;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

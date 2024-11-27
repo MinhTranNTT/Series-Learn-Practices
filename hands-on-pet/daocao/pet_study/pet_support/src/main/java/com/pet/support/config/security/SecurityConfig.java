@@ -1,7 +1,11 @@
 package com.pet.support.config.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,7 +20,11 @@ import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig {
+    // 引入UseDetailsService
+    private final SysUserDetailsService sysUserDetailsService;
+    // private final JwtAuthticationFilter jwtAuthticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -25,7 +33,9 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         // 启用拦截策略,即任何用户可以登录到/auth/sys路由，但是对应其他的访问需要经过认证之后才能继续访问。
-        http.authorizeHttpRequests(auth->auth.requestMatchers("/auth/sys").permitAll().anyRequest().authenticated());
+        // http.authorizeHttpRequests(auth->auth.requestMatchers("/auth/sys").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(auth->auth.requestMatchers("/**").permitAll().anyRequest().authenticated());
+
         // 开启form认证
         http.formLogin(Customizer.withDefaults());
         // 配置跨域，允许跨域
@@ -58,6 +68,16 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",corsConfiguration);
         return source;
+    }
+
+    // 创建AuthenticationManager
+    @Bean
+    public AuthenticationManager sysUserAuthenticationManager(){
+        // 处理基于数据库的身份验证的提供者的信息
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(sysUserDetailsService);
+        return new ProviderManager(provider);
     }
 
 }

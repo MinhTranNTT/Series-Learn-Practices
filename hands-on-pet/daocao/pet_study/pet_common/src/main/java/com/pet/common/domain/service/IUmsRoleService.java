@@ -1,7 +1,7 @@
-package com.pet.auth.domain.service;
+package com.pet.common.domain.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.pet.auth.domain.entity.UmsRole;
+import com.pet.common.domain.entity.UmsRole;
 
 public interface IUmsRoleService extends IService<UmsRole> {
 

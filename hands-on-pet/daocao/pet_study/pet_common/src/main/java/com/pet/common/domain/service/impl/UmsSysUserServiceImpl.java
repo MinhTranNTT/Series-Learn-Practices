@@ -1,9 +1,9 @@
-package com.pet.auth.domain.service.impl;
+package com.pet.common.domain.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pet.auth.domain.entity.UmsSysUser;
-import com.pet.auth.domain.mapper.UmsSysUserMapper;
-import com.pet.auth.domain.service.IUmsSysUserService;
+import com.pet.common.domain.entity.UmsSysUser;
+import com.pet.common.domain.mapper.UmsSysUserMapper;
+import com.pet.common.domain.service.IUmsSysUserService;
 import org.springframework.stereotype.Service;
 
 @Service

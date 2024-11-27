@@ -1,14 +1,14 @@
-// 封装axios，做请求处理
-// 导入axios
+// Encapsulate axios and do request processing
+// Import axios
 import axios from 'axios';
 
-// 引入route
+// router
 import router from '@/router/index.js'
 
 let token = "";
 
 const request = axios.create({
-    // 根请求地址
+    // root request address
     baseURL: 'http://localhost:8080/',
     withCredentials: false, // 用于配置请求接口跨域时是否需要凭证
     timeout: 30000 // 超时时间，单位毫秒
