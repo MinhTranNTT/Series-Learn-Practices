@@ -15,6 +15,7 @@
         <module>pet_support</module>
         <module>pet_auth</module>
         <module>pet_starter</module>
+        <module>pet_sys_user</module>
     </modules>
 
     <properties>
@@ -139,6 +140,12 @@
             <dependency>
                 <groupId>com.pet</groupId>
                 <artifactId>pet_auth</artifactId>
+                <version>${pet.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.pet</groupId>
+                <artifactId>pet_sys_user</artifactId>
                 <version>${pet.version}</version>
             </dependency>
         </dependencies>

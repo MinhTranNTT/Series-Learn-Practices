@@ -1,5 +1,6 @@
 package com.pet.support.config.security;
 
+import com.pet.support.filter.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,7 +26,7 @@ import java.util.Collections;
 public class SecurityConfig {
     // 引入UseDetailsService
     private final SysUserDetailsService sysUserDetailsService;
-    // private final JwtAuthticationFilter jwtAuthticationFilter;
+    private final JwtAuthenticationFilter jwtAuthticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -33,15 +35,15 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         // 启用拦截策略,即任何用户可以登录到/auth/sys路由，但是对应其他的访问需要经过认证之后才能继续访问。
-        // http.authorizeHttpRequests(auth->auth.requestMatchers("/auth/sys").permitAll().anyRequest().authenticated());
-        http.authorizeHttpRequests(auth->auth.requestMatchers("/**").permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(auth->auth.requestMatchers("/auth/sys").permitAll().anyRequest().authenticated());
+        // http.authorizeHttpRequests(auth->auth.requestMatchers("/**").permitAll().anyRequest().authenticated());
 
         // 开启form认证
         http.formLogin(Customizer.withDefaults());
         // 配置跨域，允许跨域
         http.cors(cors-> cors.configurationSource(configurationSource()));
 
-        // http.addFilterBefore(jwtAuthticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

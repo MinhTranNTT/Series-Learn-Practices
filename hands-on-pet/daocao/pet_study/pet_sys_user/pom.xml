@@ -9,7 +9,8 @@
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>pet_starter</artifactId>
+    <groupId>com.pet</groupId>
+    <artifactId>pet_sys_user</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,21 +19,10 @@
     </properties>
 
     <dependencies>
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>com.pet</groupId>
-            <artifactId>pet_auth</artifactId>
-            <version>${pet.version}</version>
+            <artifactId>pet_support</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.pet</groupId>
-            <artifactId>pet_sys_user</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>

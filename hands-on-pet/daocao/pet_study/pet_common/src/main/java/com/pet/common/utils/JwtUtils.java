@@ -1,11 +1,13 @@
 package com.pet.common.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.pet.common.constants.CacheConstants;
 import com.pet.common.domain.vo.LoginUserVO;
 import com.pet.common.utils.redis.RedisCacheUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,33 +57,34 @@ public class JwtUtils {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
-    // public Object getLoginUser(HttpServletRequest request) {
-    //     // 获取Jwt加密过的token
-    //     String token = request.getHeader("Daocao-Authorization");
-    //     if(StrUtil.isNotEmpty(token)){
-    //         log.info("token============>"+token);
-    //         // 解析token，
-    //         Claims claims = parseToken(token);
-    //         String parseToken = (String) claims.get("token");
-    //         System.out.println("parseToken=========>"+parseToken);
-    //         // 从redis中获取数据
-    //         LoginUserVO loginUserVO = redisCacheUtil.getCacheObject(CacheConstants.LOGIN_USER_KEY + parseToken);
-    //         // 刷新token
-    //         long currentTimeMillis = System.currentTimeMillis();
-    //         long time = loginUserVO.getLogTime();
-    //         long minute = currentTimeMillis/1000/60 - time/1000/60;
-    //         log.info("当前时间差值为:"+minute);
-    //         if(minute>=20){
-    //             refreshToken(loginUserVO);
-    //         }
-    //         return loginUserVO;
-    //
-    //     }
-    //     return null;
-    // }
+    public Object getLoginUser(HttpServletRequest request) {
+        // 获取Jwt加密过的token
+        String token = request.getHeader("Daocao-Authorization");
+        if(StrUtil.isNotEmpty(token)){
+            log.info("token============>"+token);
+            // 解析token，
+            Claims claims = parseToken(token);
+            String parseToken = (String) claims.get("token");
+            System.out.println("parseToken=========>"+parseToken);
+            // 从redis中获取数据
+            LoginUserVO loginUserVO = redisCacheUtil.getCacheObject(CacheConstants.LOGIN_USER_KEY + parseToken);
+            // 刷新token
+            long currentTimeMillis = System.currentTimeMillis();
+            long time = loginUserVO.getLogTime();
+            long minute = currentTimeMillis/1000/60 - time/1000/60;
+            log.info("The current time difference is:"+minute);
+            if(minute>=20){
+                refreshToken(loginUserVO);
+            }
+            return loginUserVO;
 
-    // private void refreshToken(LoginUserVO loginUserVO){
-    //     // 将值存入redis数据库中，
-    //     redisCacheUtil.setCacheObject(CacheConstants.LOGIN_USER_KEY+loginUserVO.getToken(),loginUserVO,30, TimeUnit.MINUTES);
-    // }
+        }
+        return null;
+    }
+
+    private void refreshToken(LoginUserVO loginUserVO){
+        // 将值存入redis数据库中，
+        redisCacheUtil.setCacheObject(CacheConstants.LOGIN_USER_KEY+loginUserVO.getToken(),loginUserVO,30, TimeUnit.MINUTES);
+    }
+
 }

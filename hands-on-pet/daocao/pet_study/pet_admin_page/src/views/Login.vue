@@ -46,7 +46,15 @@
     import { ref } from 'vue';
     
     // import login method
-    import { login } from '@/api/auth/index.js'
+    import { login } from '@/api/auth/index.js';
+    import { searchSelfRouter } from '@/api/user/index.js';
+    import { setToken } from '@/utils/token';
+    import { useMenuStore } from '@/stores/menu.js';
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
+    // 声明表单绑定值
+    const menuStore = useMenuStore();
 
     const loginForm = ref({
         account: undefined,
@@ -56,10 +64,30 @@
 
     function handleLogin() {
         login(loginForm.value).then((res)=>{
-            console.log("handleLogin() ====>",res);
+            // console.log("handleLogin() ====>",res);
             // 判断是否成功
             if(res.data.code == 200){
-                console.log("Okie====>",res);
+              // console.log("Okie====>",res);
+              // 将用户token存入到pinia/sessionStorage中
+                setToken("daocaoToken",res.data.token);
+                // TODO 获取用户的路由访问权限
+                searchSelfRouter().then(res=>{
+                    console.log("res=====>",res);
+                    // 将路由信息存储到pinia中
+                    menuStore.setMenuList(res.data.data);
+                    // 跳转页面  /index
+                    // 1.在路由守卫上渲染动态路由
+                    // 2.开发项目主页面【左侧导航，头部，主体部分】
+                    router.push("/index");
+                }); 
+                // searchUserInfo().then(res=>{
+                //     // 存储到pinia中
+                //     if(res.data.code == 200){
+                //         userStore.setUserInfo(res.data.data);
+                //     }
+                // });
+                console.log("登录成功!");
+
             }
         }).catch((err) => {
           console.log("Catch");

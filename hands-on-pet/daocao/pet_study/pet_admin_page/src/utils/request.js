@@ -5,7 +5,7 @@ import axios from 'axios';
 // router
 import router from '@/router/index.js'
 
-let token = "";
+import { getToken } from './token';
 
 const request = axios.create({
     // root request address
@@ -22,11 +22,8 @@ request.interceptors.request.use((config)=>{
     // 在请求头添加token，判断是否需要发送token
     // token应该从pinia中获取
 
-    // if(getToken("daocaoToken")){
-    //     config.headers['Daocao-Authorization'] = getToken("daocaoToken");
-    // }
-    if (token) {
-        config.headers['Daocao-Authorization'] = token;
+    if(getToken("daocaoToken")){
+        config.headers['Daocao-Authorization'] = getToken("daocaoToken");
     }
 
     return config;
