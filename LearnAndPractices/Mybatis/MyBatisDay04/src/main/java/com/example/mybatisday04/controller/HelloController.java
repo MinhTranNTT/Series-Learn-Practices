@@ -36,6 +36,17 @@ public class HelloController {
     private List<Employee> getListEmployee() {
         List<Employee> employees = employeeService.listAllByLastName("tom");
         return employees;
-
     }
+
+    // @GetMapping("/pagination")
+    // public ResponseEntity<?> getListPagination(@RequestParam(value = "pageNumber", defaultValue = "1")
+    //                                             Integer pageNumber) {
+    //     Map<String, Object> rs = new HashMap<>();
+    //     PageHelper.startPage(pageNumber, 5);
+    //     List<Employee> employees = employeeService.listAllByLastName("Vayne");
+    //     PageInfo<Employee> page = new PageInfo<>(employees, 5);
+    //     // rs.put("data", employees);
+    //     rs.put("page", page);
+    //     return ResponseEntity.status(HttpStatus.OK).body(rs);
+    // }
 }

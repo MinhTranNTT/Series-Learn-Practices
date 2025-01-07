@@ -92,6 +92,9 @@ class EmployeeServiceTest {
     @Test
     public void testLoadInterceptor() {
         Page<Employee> page = new Page<>(1,5);
+        // Page<Employee> page = new Page<>(2,5);
+        // Page<Employee> page = new Page<>(3,5);
+        // Page<Employee> page = new Page<>(4,5);
         employeeService.page(page, null);
         List<Employee> employeeList = page.getRecords();
         employeeList.forEach(System.out::println);
