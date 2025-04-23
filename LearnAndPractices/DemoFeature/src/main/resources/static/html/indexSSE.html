@@ -1,0 +1,45 @@
+<body>
+    <div id="content" style="text-align: center;">
+        <h1>SSE nhận dữ liệu sự kiện từ máy chủ</h1>
+        <div id="message">Đang chờ kết nối...</div>
+    </div>
+    <script>
+        let source = null;
+        let userId = 7777;
+    
+        function setMessageInnerHTML(message) {
+            const messageDiv = document.getElementById("message");
+            const newParagraph = document.createElement("p");
+            newParagraph.textContent = message;
+            messageDiv.appendChild(newParagraph);
+        }
+    
+        if (window.EventSource) {
+            // Thiết lập kết nối
+            source = new EventSource('http://localhost:8080/api/hello/subSseEmitter/' + userId);
+            setMessageInnerHTML("Kết nối người dùng=" + userId);
+            /**
+             * Khi kết nối được thiết lập, sự kiện open sẽ được kích hoạt
+             * Cách viết khác: source.onopen = function (event) {}
+             */
+            // source.addEventListener('open', function (e) {
+            //     console.log(e);
+            //     setMessageInnerHTML("Đã thiết lập kết nối...");
+            // }, false);
+            source.addEventListener('sseEmitter', function (e) {
+                console.log(e.data);
+                setMessageInnerHTML("Đã thiết lập kết nối...");
+            }, false);
+            /**
+             * Máy khách nhận dữ liệu từ máy chủ
+             * Cách viết khác: source.onmessage = function (event) {}
+             */
+            source.addEventListener('message', function (e) {
+                console.log(e);
+                setMessageInnerHTML(e.data);
+            });
+        } else {
+            setMessageInnerHTML("Trình duyệt của bạn không hỗ trợ SSE");
+        }
+    </script>
+    </body>

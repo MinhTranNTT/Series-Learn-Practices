@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ResponseBodyEmitter Example</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+<h1>Streaming Response from Spring Boot</h1>
+<pre id="output"></pre>
+
+<script>
+    const output = document.getElementById('output');
+    const emmitReq = "bodyEmitter";
+    const emmitReqAsync = "bodyEmitterAsync";
+
+    fetch(`http://localhost:8080/api/hello/${emmitReq}`)
+        .then(response => {
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+
+            function read() {
+                reader.read().then(({ done, value }) => {
+                    if (done) {
+                        console.log("Stream done");
+                        return;
+                    }
+                    console.log(decoder.decode(value));
+                    read();
+                });
+            }
+
+            read();
+        })
+        .catch(err => console.error('Fetch error:', err));
+</script>
+</body>
+
+</html>
