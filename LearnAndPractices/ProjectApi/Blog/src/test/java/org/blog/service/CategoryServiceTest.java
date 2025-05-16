@@ -1,22 +1,34 @@
 package org.blog.service;
 
 import org.blog.entity.Category;
+import org.blog.mapper.CategoryMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class CategoryServiceTest {
-    @Autowired
-    private CategoryService categoryService;
+    @Autowired private CategoryService categoryService;
+    @Autowired private CategoryMapper categoryMapper;
+
 
     @Test
     public void getAllCategory() {
         List<Category> categories = categoryService.getAllCategory();
+        categories.forEach(System.out::println);
+    }
+
+    @Test
+    public void getCategoryById() {
+        Category category = categoryService.getCategoryById(1L);
+        System.out.println(category);
+    }
+
+    @Test
+    public void getAllCategoryByMapper() {
+        List<Category> categories = categoryMapper.getAllCategory();
         categories.forEach(System.out::println);
     }
 }

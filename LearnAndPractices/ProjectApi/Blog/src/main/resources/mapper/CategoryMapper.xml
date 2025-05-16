@@ -2,10 +2,25 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.blog.mapper.CategoryMapper">
+    <insert id="createCategory" useGeneratedKeys="true" keyProperty="category.id">
+        INSERT INTO category (category_name, category_code) VALUES (#{category.categoryName}, #{category.categoryCode});
+    </insert>
 
     <select id="getAllCategory" resultType="Category">
         select id, category_name, category_code
         from category;
+    </select>
+
+    <select id="getCategoryById" resultType="Category">
+        select id, category_name, category_code
+        from category
+        where id = #{id};
+    </select>
+
+    <select id="getCategoryByName" resultType="Category">
+        select id, category_name, category_code
+        from category
+        where category_name = #{name};
     </select>
 
 </mapper>
