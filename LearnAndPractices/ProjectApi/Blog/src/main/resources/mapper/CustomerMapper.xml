@@ -1,0 +1,27 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.blog.mapper.CustomerMapper">
+
+    <insert id="createCustomer" useGeneratedKeys="true" keyProperty="customer.id">
+        INSERT INTO customer (email, pwd, role) VALUES (#{customer.email}, #{customer.pwd}, #{customer.role});
+    </insert>
+
+    <!--<select id="getAllCategory" resultType="Category">
+        select id, category_name, category_code
+        from category;
+    </select>-->
+
+    <!--<select id="getCategoryById" resultType="Category">
+        select id, category_name, category_code
+        from category
+        where id = #{id};
+    </select>-->
+
+    <select id="getCustomerByEmail" resultType="Customer">
+        select id, email, pwd, role
+        from customer
+        where email = #{email};
+    </select>
+
+</mapper>

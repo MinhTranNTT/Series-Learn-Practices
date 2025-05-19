@@ -20,17 +20,13 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(req -> req
+        http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
+                .authorizeHttpRequests(req -> req
                 .antMatchers("/myAccount","/myBalance","/myCards","/myLoans").authenticated()
-                .antMatchers("/contact","/notices").permitAll())
+                .antMatchers("/contact","/notices","/customer").permitAll())
                 .formLogin(flc -> flc.disable())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean

@@ -53,4 +53,6 @@ INSERT  INTO `customer` (`email`, `pwd`, `role`) VALUES
 ('admin@example.com', '{bcrypt}$2a$12$SBQ6B4WuzbNaMYdU0sGvYuy1z/iCoq0Ll29.meIBndugoYezBwoL6', 'admin');
 
 select * from customer;
+select id, email, pwd, role
+from customer;
 
