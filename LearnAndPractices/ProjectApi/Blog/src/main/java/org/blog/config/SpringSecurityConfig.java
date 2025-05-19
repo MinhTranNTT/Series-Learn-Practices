@@ -10,7 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
 
 @Configuration
 public class SpringSecurityConfig {
@@ -26,10 +29,8 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails userRead = User.withUsername("user").password("{noop}123456").authorities("read").build();
-        UserDetails userAdmin = User.withUsername("admin").password("{bcrypt}$2a$12$SBQ6B4WuzbNaMYdU0sGvYuy1z/iCoq0Ll29.meIBndugoYezBwoL6").authorities("admin").build();
-        return new InMemoryUserDetailsManager(userRead, userAdmin);
+    public UserDetailsService userDetailsService(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     @Bean
