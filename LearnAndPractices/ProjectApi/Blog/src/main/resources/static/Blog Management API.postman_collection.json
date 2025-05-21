@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "2dab5fc5-8a3e-45d6-9605-a0da98bcd1b9",
+		"name": "Blog Management API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34016806"
+	},
+	"item": [
+		{
+			"name": "/getHello",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/getHello",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"getHello"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/myAccount",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user_pwd}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user_name}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/myAccount1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"myAccount1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/customer",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"minhtran@gmail.com\",\r\n    \"pwd\": \"123456\",\r\n    \"role\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/customer",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"customer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/contact",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{user_pwd}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{user_name}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/contact",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"contact"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/notices",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/notices",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"notices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/getHello/{id}",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/getHello/2025",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"getHello",
+						"2025"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/getCategory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/getCategory/9",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"getCategory",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/getCategory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"categoryName\": \"Angular Js4\",\r\n    \"categoryCode\": \"Angularjs4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/api/v1/category",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"category"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/getHello?name=MinhTran&id=100",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/api/v1/getHello?name=MinhTran&id=100",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"getHello"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "MinhTran"
+						},
+						{
+							"key": "id",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
