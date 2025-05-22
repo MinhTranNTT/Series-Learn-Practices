@@ -15,18 +15,23 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
-                // .requiresChannel(crr -> crr.anyRequest().requiresSecure())
+        http
+                .csrf(csrfConfig -> csrfConfig.disable())
+                // .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                // .and()
                 .authorizeHttpRequests(req -> req
-                .antMatchers("/myAccount","/myBalance","/myCards","/myLoans").authenticated()
-                .antMatchers("/contact","/notices","/customer").permitAll())
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .formLogin(flc -> flc.disable())
+                        // .antMatchers("/contact","/notices","/customer").permitAll()
+                        // .anyRequest().authenticated()
+                        .antMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+                        .antMatchers("/myBalance").hasAnyAuthority("VIEWBALANCE", "VIEWACCOUNT")
+                        .antMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                        .antMatchers("/myCards").hasAuthority("VIEWCARDS")
+                        .antMatchers("/user").authenticated()
+                );
 
-                .httpBasic(hsc -> hsc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()))
-                // .exceptionHandling(ehc -> ehc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint())); // an Global config
-                .exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler())); // an Global config
+        http.formLogin(flc -> flc.disable());
+        http.httpBasic(hsc -> hsc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
+        http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
 
         return http.build();
     }

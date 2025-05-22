@@ -7,21 +7,27 @@
         INSERT INTO customer (email, pwd, role) VALUES (#{customer.email}, #{customer.pwd}, #{customer.role});
     </insert>
 
-    <!--<select id="getAllCategory" resultType="Category">
-        select id, category_name, category_code
-        from category;
-    </select>-->
+    <resultMap id="mapGetCustomerByEmail" type="Customer">
+        <id column = "id" property="id"/>
+        <result column="email" property="email"/>
+        <result column="pwd" property="pwd"/>
+        <result column="role" property="role"/>
+        <collection property="authorities" ofType="string">
+            <result column="authority_name" />
+        </collection>
+    </resultMap>
 
-    <!--<select id="getCategoryById" resultType="Category">
-        select id, category_name, category_code
-        from category
-        where id = #{id};
-    </select>-->
-
-    <select id="getCustomerByEmail" resultType="Customer">
-        select id, email, pwd, role
-        from customer
+    <select id="getCustomerByEmail" resultMap="mapGetCustomerByEmail">
+        select c.customer_id as id, c.email, c.pwd, a.name as authority_name
+        from customer c
+        inner join authorities a on c.customer_id = a.customer_id
         where email = #{email};
+    </select>
+
+    <select id="getCustomerById" resultType="Customer">
+        select customer_id as id, email, pwd, role
+        from customer
+        where customer_id = #{id};
     </select>
 
 </mapper>

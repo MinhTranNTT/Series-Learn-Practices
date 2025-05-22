@@ -53,6 +53,61 @@ INSERT  INTO `customer` (`email`, `pwd`, `role`) VALUES
 ('admin@example.com', '{bcrypt}$2a$12$SBQ6B4WuzbNaMYdU0sGvYuy1z/iCoq0Ll29.meIBndugoYezBwoL6', 'admin');
 
 select * from customer;
+
 select id, email, pwd, role
 from customer;
 
+show tables;
+
+select * from authorities;
+
+DROP TABLE authorities;
+
+CREATE TABLE `authorities` (
+                               `id` int NOT NULL AUTO_INCREMENT,
+                               `customer_id` int NOT NULL,
+                               `name` varchar(50) NOT NULL,
+                               PRIMARY KEY (`id`),
+                               KEY `customer_id` (`customer_id`),
+                               CONSTRAINT `authorities_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`)
+);
+
+INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'VIEWACCOUNT');
+INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'VIEWCARDS');
+INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'VIEWLOANS');
+INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'VIEWBALANCE');
+DELETE FROM `authorities`;
+
+INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'ROLE_USER');
+
+INSERT INTO `authorities` (`customer_id`, `name`) VALUES (1, 'ROLE_ADMIN');
+
+
+drop table customer;
+
+CREATE TABLE `customer` (
+                            `customer_id` int NOT NULL AUTO_INCREMENT,
+                            `name` varchar(100) NOT NULL,
+                            `email` varchar(100) NOT NULL,
+                            `mobile_number` varchar(20) NOT NULL,
+                            `pwd` varchar(500) NOT NULL,
+                            `role` varchar(100) NOT NULL,
+                            `create_dt` date DEFAULT NULL,
+                            PRIMARY KEY (`customer_id`)
+);
+
+INSERT INTO `customer` (`name`,`email`,`mobile_number`, `pwd`, `role`,`create_dt`)
+VALUES ('Happy','happy@example.com','5334122365', '{bcrypt}$2a$12$SBQ6B4WuzbNaMYdU0sGvYuy1z/iCoq0Ll29.meIBndugoYezBwoL6', 'admin',CURDATE());
+INSERT INTO `customer` (`name`,`email`,`mobile_number`, `pwd`, `role`,`create_dt`)
+VALUES ('Happy','admin@example.com','5334122365', '{bcrypt}$2a$12$SBQ6B4WuzbNaMYdU0sGvYuy1z/iCoq0Ll29.meIBndugoYezBwoL6', 'admin',CURDATE());
+
+
+select * from customer;
+select * from authorities;
+
+select c.customer_id as id, c.email, c.pwd, a.name as role
+from customer c
+inner join authorities a on c.customer_id = a.customer_id
+where email = 'happy@example.com';
+
+select customer_id, email, pwd, role from customer where customer_id = 1;

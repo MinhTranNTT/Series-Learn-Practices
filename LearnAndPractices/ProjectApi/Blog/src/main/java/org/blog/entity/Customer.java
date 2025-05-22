@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @TableName("customer")
 @NoArgsConstructor
@@ -20,5 +22,8 @@ public class Customer {
     private String pwd;
     @TableField(value = "role")
     private String role;
+
+    private List<String> authorities;
+
 
 }
