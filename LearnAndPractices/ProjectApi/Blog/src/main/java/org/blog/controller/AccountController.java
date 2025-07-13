@@ -5,6 +5,7 @@ import org.blog.entity.Customer;
 import org.blog.entity.OwnerCheck;
 import org.blog.mapper.CustomerMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,8 @@ public class AccountController {
     }
 
     @GetMapping("/myAccount/{id}")
-    @OwnerCheck(pathId = "id")
+    // @OwnerCheck(pathId = "id")
+    @PreAuthorize("@authService.isOwner(#id)")
     public ResponseEntity<?> getAccountDetails(@PathVariable("id") Long id) {
         Customer customerById = customerMapper.getCustomerById(id);
         Optional.ofNullable(customerById)

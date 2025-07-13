@@ -13,7 +13,7 @@
         <result column="pwd" property="pwd"/>
         <result column="role" property="role"/>
         <collection property="authorities" ofType="string">
-            <result column="authority_name" />
+            <result column="authority_name"/>
         </collection>
     </resultMap>
 

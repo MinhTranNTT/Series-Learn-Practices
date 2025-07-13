@@ -110,4 +110,7 @@ from customer c
 inner join authorities a on c.customer_id = a.customer_id
 where email = 'happy@example.com';
 
-select customer_id, email, pwd, role from customer where customer_id = 1;
+select c.customer_id as id, c.email, c.pwd, a.name as authority_name
+from customer c
+         inner join authorities a on c.customer_id = a.customer_id
+where email = 'happy@example.com';

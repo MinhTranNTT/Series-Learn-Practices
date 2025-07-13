@@ -25,9 +25,9 @@ public class BlogUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = Optional.ofNullable(customerMapper.getCustomerByEmail(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User details not found for the user: " + username));
-        Set<GrantedAuthority> authorities = customer.getAuthorities()
-                .stream().distinct().map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toSet());
-        return new User(customer.getEmail(), customer.getPwd(), authorities);
+        // Set<GrantedAuthority> authorities = customer.getAuthorities()
+        //         .stream().distinct().map(SimpleGrantedAuthority::new)
+        //         .collect(Collectors.toSet());
+        return new User(customer.getEmail(), customer.getPwd(), customer.getAuthorities());
     }
 }

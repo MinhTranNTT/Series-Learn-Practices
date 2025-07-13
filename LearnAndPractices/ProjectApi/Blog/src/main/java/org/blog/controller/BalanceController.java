@@ -8,6 +8,7 @@ public class BalanceController {
 
     @GetMapping("/myBalance")
     public String getBalance() {
+        String txt = "hallo".toUpperCase();
         return "Balance Controller";
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Authority {
-    private int id;
-    private int customerId;
-    private List<String> roles;
+    // private int id;
+    // private int customerId;
+    private String name;
 }
