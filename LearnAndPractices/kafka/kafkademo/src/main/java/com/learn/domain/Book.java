@@ -1,13 +1,10 @@
-package com.learnkafka.domain;
+package com.learn.domain;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
-public record Book(
-        @NotNull
-        Integer bookId,
-        @NotBlank
-        String bookName,
-        @NotBlank
-        String bookAuthor) {
+@Data
+public class Book {
+    Integer bookId;
+    String bookName;
+    String bookAuthor;
 }

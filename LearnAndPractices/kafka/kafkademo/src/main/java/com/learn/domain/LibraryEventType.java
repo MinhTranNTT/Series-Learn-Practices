@@ -1,4 +1,4 @@
-package com.learnkafka.domain;
+package com.learn.domain;
 
 public enum LibraryEventType {
     NEW,

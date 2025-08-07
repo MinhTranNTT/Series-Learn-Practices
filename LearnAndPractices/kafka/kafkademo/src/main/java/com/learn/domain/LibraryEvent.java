@@ -1,13 +1,10 @@
-package com.learnkafka.domain;
+package com.learn.domain;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
-public record LibraryEvent(
-        Integer libraryEventId,
-        LibraryEventType libraryEventType,
-        @NotNull
-        @Valid
-        Book book
-) {
+@Data
+public class LibraryEvent {
+    Integer libraryEventId;
+    LibraryEventType libraryEventType;
+    Book book;
 }

@@ -1,8 +1,10 @@
 package com.learn.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.learnkafka.domain.LibraryEvent;
+import com.learn.domain.LibraryEvent;
+import com.learn.producer.LibraryEventProducer;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +13,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@AllArgsConstructor
 @Slf4j
 public class LibraryEventsController {
 
-    // @Autowired
-    // LibraryEventProducer libraryEventProducer;
+    private final LibraryEventProducer libraryEventProducer;
 
     @PostMapping("/v1/libraryevent")
     public ResponseEntity<?> postLibraryEvent(@RequestBody @Valid LibraryEvent libraryEvent) throws JsonProcessingException {
         log.info("libraryEvent: {} ", libraryEvent);
+        libraryEventProducer.sendLibraryEvent(libraryEvent);
+
+
         // if (LibraryEventType.NEW != libraryEvent.libraryEventType()) {
         //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Only NEW event type is supported");
         // }
